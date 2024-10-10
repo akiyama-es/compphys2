@@ -6,7 +6,7 @@ set title "Title"                                               #タイトルを
 set key font "Times,12"                                         #凡例(key)のフォント,大きさを指定
 set key top left                                                #凡例(key)の表示場所を指定
 set xlabel "x label"                                            #x軸の名前（見出し）を指定
-set ylabel "y label"                                            #y軸の名前（見出し）を指定          
+set ylabel "y label"                                            #y軸の名前（見出し）を指定       
 set xlabel font "Times,14"                                      #x軸の見出しのフォント,大きさを指定
 set ylabel font "Times,14"　　　　　　　　　　　　　　　　　　　　　　　#y軸の見出しのフォント,大きさを指定
 set xtics font "Times,14"                                       #x軸の目盛りのフォント,大きさを指定
