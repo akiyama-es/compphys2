@@ -28,7 +28,7 @@
         "*.synctex.gz"
     ],
 
-    "latex-workshop.latex.outDir": "others",
+    "latex-workshop.latex.outDir": "output",
 
     "latex-workshop.latex.recipes": [
         {
@@ -44,7 +44,8 @@
             "name": "latexmk",
             "command": "latexmk",
             "args": [
-                "-silent",
+                "-file-line-error",
+                "-interaction=nonstopmode",
                 "-outdir=%OUTDIR%",
                 "%DOC%"
             ],
