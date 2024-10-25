@@ -1,0 +1,211 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第1回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2024年11月8日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_1}，\ref{sec:problem_2}，\ref{sec:problem_3}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture4/report1/main.tex}）を活用しても構わない．
+    \item 作成したレポートの.pdfファイルはmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_1}
+
+第2講(10月11日)で，日本の総人口の推移を表す図を\texttt{gnuplot}で作成した．
+その時に使った人口推移のデータファイルには，各都道府県の人口推移のデータも含まれている．
+このデータファイル（\texttt{lecture2/data/population.dat}）を使い，好きな都道府県を一つ選んで，その都道府県の人口推移を表す図を作成せよ．
+図の作成にあたっては，以下の点を満たすようにすること．
+\begin{itemize}
+    \item 図の横軸を西暦とし，縦軸を人口とすること．
+    \item 人口は，総数，男性，女性の三つを同じ図にプロットし，それぞれに異なるシンボルと色を用いること．
+    \item 何の図か一目で分かるように，軸のラベルと凡例(key)を付けること．
+\end{itemize}
+また，\LaTeX でレポートにまとめる際には，以下の点を満たすようにすること．
+\begin{itemize}
+    \item 「\LaTeX 入門」の6節を参照し，図の挿入時にキャプションをつけること．
+    \item 「\LaTeX 入門」の7節を参照し，\texttt{\textbackslash label}と\texttt{\textbackslash ref}を使って，「図$*$（図の番号）は$\circ\circ\circ$の人口の推移を表している．」といった文を本文中に書くこと．
+    \item 「\LaTeX 入門」の9節を参照し，使用したデータファイルの出典を参考文献として記載すること．
+    \texttt{\textbackslash cite}を使って，「図$*$（図の番号）は国勢調査[$*$（参考文献の番号）]のデータに基づく．」といった文を本文中に書けば良い．
+    また，参考文献情報については，このレポートと共に配布された.bibファイルを使って良い（\texttt{lecture4/report1/bib/ref.bib}）．
+\end{itemize}
+
+\section{}
+\label{sec:problem_2}
+
+好きな方程式を一つ書け．
+また，その式がどういう方程式なのか簡潔な説明を書け．
+例えば，式の中の記号の意味，項の意味，どのような分野で使われているか，それを解くと何が分かるか，などを書いてもらえれば良い．
+
+
+\section{}
+\label{sec:problem_3}
+
+次のような$d$次元の運動量空間上の関数を考えよう．
+\begin{align}
+\label{eq:correlator_f}
+    f(\bm{k})=\frac{1}{|\bm{k}|^{2}+a^{2}}
+\end{align}
+ここで，$\bm{k}=(k_{1},k_{2},\cdots,k_{d})$は$d$次元のベクトルであり，
+$|\bm{k}|^{2}=\sum_{i=1}^{d}k_{i}^{2}$である．
+$a$は正の実数とする．
+以下の手順に沿って，式\eqref{eq:correlator_f}のFourier変換，
+\begin{align}
+\label{eq:correlator_g}
+    g(\bm{r})
+    =
+    \left(\prod_{i=1}^{d}\int^{\infty}_{-\infty}\mathrm{d}k_{i}\right)
+    \mathrm{e}^{\mathrm{i}\bm{k}\cdot\bm{r}}
+    f(\bm{k})
+\end{align}
+を計算しよう．
+なお，$\bm{r}=(r_{1},r_{2},\cdots,r_{d})$は$d$次元の位置ベクトルで，
+$\bm{k}\cdot\bm{r}=\sum_{i=1}^{d}k_{i}r_{i}$
+である．\\
+
+\noindent {\bf (A)}
+以下の等式を示せ．
+\begin{align}
+\label{eq:exp}
+    \frac{1}{q}
+    =
+    \int^{\infty}_{0}\mathrm{d}t~\mathrm{e}^{-tq}
+\end{align}
+\\
+
+\noindent {\bf (B)}
+式\eqref{eq:exp}を使うと，式\eqref{eq:correlator_g}は，
+\begin{align}
+\label{eq:correlator_g_exp}
+    g(\bm{r})
+    =
+    \left(\prod_{i=1}^{d}\int^{\infty}_{-\infty}\mathrm{d}k_{i}\right)
+    \int^{\infty}_{0}\mathrm{d}t
+    ~\mathrm{e}^{-t\left(|\bm{k}|^{2}+a^{2}\right)+\mathrm{i}\bm{k}\cdot\bm{r}}
+\end{align}
+と書き換えることができる．
+ここで，積分の順序を交換し，各$k_{i}$に関する積分を先に実行しよう．
+式\eqref{eq:correlator_g_exp}の各$k_{i}$積分が
+\begin{align}
+\label{eq:int_k}
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\mathrm{e}^{-tk_{i}^{2}+\mathrm{i}k_{i}r_{i}}
+    =
+    \sqrt{\frac{\pi}{t}}
+    \exp\left[
+        -\frac{r_{i}^{2}}{4t}
+    \right]
+\end{align}
+となることを示せ．
+ただし，以下のGauss積分は既知として良い．
+\begin{align}
+    \int^{\infty}_{-\infty}\mathrm{d}k
+    ~\mathrm{e}^{-\alpha k^{2}}
+    =
+    \sqrt{\frac{\pi}{\alpha}}
+\end{align}
+\\
+
+\noindent {\bf (C)}
+式\eqref{eq:int_k}を使うと，式\eqref{eq:correlator_g_exp}は，
+\begin{align}
+\label{eq:correlator_g_bessel}
+    g(\bm{r})
+    =
+    \pi^{d/2}
+    \int^{\infty}_{0}\mathrm{d}t
+    ~t^{-d/2}
+    \exp\left[
+        -a^{2}t-\frac{|\bm{r}|^{2}}{4t}
+    \right]
+\end{align}
+となる．
+この積分は第2種変形Bessel関数$K_{\nu}(z)$を使って表すことができる．
+その積分表示は，
+\begin{align}
+    K_{\nu}(z)
+    =
+    \frac{1}{2}\left(\frac{z}{2}\right)^{\nu}
+    \int^{\infty}_{0}\mathrm{d}t
+    ~t^{-\nu-1}
+    \exp\left[
+        -t-\frac{z^{2}}{4t}
+    \right]
+\end{align}
+である．
+このとき，式\eqref{eq:correlator_g_bessel}が，
+\begin{align}
+    g(\bm{r})
+    =
+    2\pi^{d/2}a^{d-2}\left(\frac{2}{a|\bm{r}|}\right)^{d/2-1}
+    K_{d/2-1}(a|\bm{r}|)
+\end{align}
+となることを示せ．
+\clearpage
+
+\noindent {\bf (D)}
+$|\bm{r}|$が十分大きい場合，$K_{d/2-1}(a|\bm{r}|)$は，
+\begin{align}
+    K_{d/2-1}(a|\bm{r}|)
+    \sim
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{\sqrt{a|\bm{r}|}}
+\end{align}
+の漸近形で書ける．
+$|\bm{r}|$が十分大きい場合，$g(\bm{r})$の$|\bm{r}|$依存性が以下で与えられることを示せ．
+\begin{align}
+\label{eq:ornstein_zernike}
+    g(\bm{r})
+    \sim
+    \frac{1}{|\bm{r}|^{(d-1)/2}}
+    \mathrm{e}^{-a|\bm{r}|}
+\end{align}
+式\eqref{eq:ornstein_zernike}は{\bf Ornstein-Zernike（オルンシュタイン-ゼルニケ）の公式}と呼ばれ，二粒子の相関を表す関数（相関関数）の長距離における典型的な振る舞いを記述する．
+
+
+\section*{アンケート}
+
+この項目は成績とは無関係です．
+
+この授業の難易度について，以下の中から最も近いと感じる番号を書いてください．
+また，授業に対する要望があれば自由に記述してください．
+\begin{enumerate}
+    \item 簡単すぎる
+    \item 比較的簡単である
+    \item ちょうど良い
+    \item 比較的難しい
+    \item 難しすぎる
+\end{enumerate}
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
