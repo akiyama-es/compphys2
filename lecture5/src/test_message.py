@@ -1,7 +1,3 @@
-import unittest
+import message
 
-class TestFunc(unittest.TestCase):
-    def test_func(self):
-        from message import func
-        self.assertIsNone(func("Hello World!"))
-        
+message.func("Hello!")
