@@ -12,6 +12,7 @@
 * 10/25 : [第4講：これまでの復習](lecture4/lecture_material_4.pdf)
 * 11/1 : [第5講：Pythonによる数値計算プログラミング入門(1)](lecture5/lecture_material_5.pdf)
 * 11/15 : [第6講：Pythonによる数値計算プログラミング入門(2)](lecture6/lecture_material_6.pdf)
+* 11/22 : [第7講：Pythonによる数値計算プログラミング入門(3)](lecture7/lecture_material_7.pdf)
 ### レポート課題
 * [第1回レポート課題](lecture4/report1.pdf)
 * [第2回レポート課題](lecture6/report2.pdf)
