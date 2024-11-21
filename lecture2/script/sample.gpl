@@ -1,25 +1,24 @@
 reset
-set terminal pdfcairo color enhanced font "Helvatica,18"        #図の出力形式を指定
-set output "output_file_name.pdf"                               #出力ファイル名を指定
-set title font "Times,14"                                       #タイトルのフォント,大きさを指定
-set title "Title"                                               #タイトルを指定
-set key font "Times,12"                                         #凡例(key)のフォント,大きさを指定
-set key top left                                                #凡例(key)の表示場所を指定
-set xlabel "x label"                                            #x軸の名前（見出し）を指定
-set ylabel "y label"                                            #y軸の名前（見出し）を指定       
-set xlabel font "Times,14"                                      #x軸の見出しのフォント,大きさを指定
-set ylabel font "Times,14"                                      #y軸の見出しのフォント,大きさを指定
-set xtics font "Times,14"                                       #x軸の目盛りのフォント,大きさを指定
-set ytics font "Times,14"                                       #x軸の目盛りのフォント,大きさを指定
-#set xrange [0:1]                                               #x軸の範囲を指定（指定しない場合は読み込んだ数値データに自動的に合わされる）
-#set yrange [0:1]                                               #y軸の範囲を指定（指定しない場合は読み込んだ数値データに自動的に合わされる）
-#set xtics 1                                                    #x軸の目盛りの幅を指定
-#set ytics 1                                                    #y軸の目盛りの幅を指定
-#set format x "%.1f"                                            #x軸の目盛りの書式を指定（例として固定小数点表示,.1で小数点以下1桁表示）
-#set format y "%.1t{/Symbol \264}10^{%T}"                       #y軸の目盛りの書式を指定（例として10の冪乗表示,{/Symbol \264}はgnuplotで用意されている特殊文字）
-#set logscale x                                                 #x軸を対数スケールにする
-#set logscale y                                                 #y軸を対数スケールにする
+set terminal pdfcairo color enhanced font "Helvatica,18"        
+set output "output_file_name.pdf"                               
+set title font "Times,14"                                       
+set title "Title"                                               
+set key font "Times,12"                                         
+set key top left                                                
+set xlabel "x label"                                            
+set ylabel "y label"                                            
+set xlabel font "Times,14"                                      
+set ylabel font "Times,14"                                     
+set xtics font "Times,14"                                       
+set ytics font "Times,14"                                       
+#set xrange [0:1]                                              
+#set yrange [0:1]                                               
+#set xtics 1                                                    
+#set ytics 1                                                    
+#set format x "%.1f"                                            
+#set format y "%.1t{/Symbol \264}10^{%T}"                       
+#set logscale x                                                 
+#set logscale y                                                 
 plot "input_file_name" using x:y pt 1 lc 1 w p title "key"      
-#"input_file_name"のx列目をx軸, y列目をy軸とし, シンボルパターン1, 色1, 点を使い, 凡例を"key"して図を作成
 
 set terminal pop
