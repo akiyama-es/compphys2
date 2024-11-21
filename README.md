@@ -18,10 +18,3 @@
 * [第2回レポート課題](lecture6/report2.pdf)
 * 第3回レポート課題
 * 第4回レポート課題
-<!--
-<<<<<<< HEAD
-* [第3回レポート課題](lecture7/report3.pdf)
-* [第4回レポート課題](lecture10/report4.pdf)
-=======
->>>>>>> refs/remotes/origin/main
--->
