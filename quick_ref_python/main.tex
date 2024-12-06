@@ -1,0 +1,378 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{Pythonに関するクイックリファレンス}
+\author{秋山進一郎\\筑波大学計算科学研究センター}
+\date{\today}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{PEP8}
+
+Pythonのコーディング規約として最も有名なのが{\bf PEP8}（Python Enhanced Proposals 8）である．
+\footnote{https://peps.python.org/pep-0008/}
+コーディング規約とは，コードを書く際の決まりごとであり，マナーのようなものである．
+初学の段階からコーディング規約を気にする必要はないが，将来的に自分の書いたコードを外部に公開するような場合には気にしておいた方が良い．
+
+
+\section{Pythonの予約語}
+
+表\ref{tab:out_of_use}の単語は，プログラム中で変数として使ってはいけない．
+これらは{\bf 予約語}と呼ばれ，変数として使用した場合は\texttt{SyntaxError}になる．
+
+\begin{table}[H]
+    \centering
+    \caption{Pythonの予約語}
+    \begin{tabular}{llllll}
+        \hline
+        \texttt{and} & \texttt{class} & \texttt{except} & \texttt{global} & \texttt{None} & \texttt{return} \\
+        \texttt{as} & \texttt{continue} & \texttt{exec} & \texttt{if} & \texttt{nonlocal} & \texttt{True} \\
+        \texttt{assert} & \texttt{def} & \texttt{False} & \texttt{import} & \texttt{not} & \texttt{try} \\
+        \texttt{async} & \texttt{del} & \texttt{finally} & \texttt{in} & \texttt{or} & \texttt{while} \\
+        \texttt{await} & \texttt{elif} & \texttt{for} & \texttt{is} & \texttt{pass} & \texttt{with} \\
+        \texttt{break} & \texttt{else} & \texttt{from} & \texttt{lambda} & \texttt{raise} & \texttt{yield} \\
+        \hline
+    \end{tabular}
+    \label{tab:out_of_use}
+\end{table}
+
+
+
+
+
+\section{型}
+
+Pythonで扱うことができるのは，{\bf 数値}，{\bf 真偽値}，{\bf 文字列}の三種類である．
+これらの種類は{\bf データ型}と呼ばれる．
+
+
+\subsection{数値型}
+
+Pythonの数値型には，{\bf 整数（\texttt{int}）}，{\bf 浮動小数点（\texttt{float}）}，{\bf 複素数（\texttt{complex}）}の三種類がある．
+文字通り整数は整数型であり，小数点を含む数字は型になる．
+Pythonでは複素数も扱うことができる．
+虚数単位には\texttt{i}ではなく\texttt{j}を使うので注意．
+例えば，$1+2\mathrm{i}$は\texttt{1+2j}と書く．
+あるいは，虚数単位を書かずに，\texttt{complex(1,2)}と書くこともできる．
+複素数の実部は\texttt{real}，虚部は\texttt{imag}で取り出すことができる（ソースコード\ref{complex}）．
+ここで，\texttt{real}や\texttt{imag}は複素数型の変数に紐づいた関数であり，このような関数のことを{\bf メソッド}と呼ぶ．
+メソッドの使い方は，\texttt{変数名.メソッド名}である．
+なお，複素数はその実部や虚部を整数で書いても浮動小数点型として扱われる．
+\begin{lstlisting}[caption=複素数の実部，虚部を取り出す,label=complex]
+ (1+2j).real
+ (1+2j).complex
+\end{lstlisting}
+
+これらの数値型に対する主要な演算については表\ref{tab:computations}を参照．
+以下にいくつかの注意点を列挙する．
+\begin{itemize}
+    \item 同じ型同士の四則演算の結果は原則としてその型になる．
+    \item ただし，整数同士の割り算（\texttt{/}）の結果は整数型ではなく，浮動小数点型になる．
+    \item 整数型と浮動小数点型の演算結果は浮動小数点型になる．
+    \item \texttt{int()}や\texttt{float()}で囲めば，文字列も数値型へ変換可能．
+    \item {\bf 浮動小数点型の数値は内部的にはその数値に最も近い近似値を扱っているため誤差を持つ．}
+\end{itemize}
+\begin{table}[H]
+    \centering
+    \caption{主な演算}
+    \begin{tabular}{c|l|l}
+        \hline
+        演算 & 結果 & 注 \\
+        \hline\hline
+        \texttt{a + b} & \texttt{a}と\texttt{b}の和 & \\
+        \texttt{a - b} & \texttt{a}と\texttt{b}の差 & \\
+        \texttt{a * b} & \texttt{a}と\texttt{b}の積 & \\
+        \texttt{a / b} & \texttt{a}と\texttt{b}の商 & \texttt{a}, \texttt{b}が\texttt{int}型でも結果は\texttt{float}型\\
+        \texttt{a // b} & \texttt{a}と\texttt{b}の商を切り下げたもの & \texttt{complex}型には使えない\\
+        \texttt{a \% b} & \texttt{a/b}の剰余 & \texttt{complex}型には使えない\\
+        \texttt{a ** b} & \texttt{a}の\texttt{b}乗 & \\
+        \texttt{pow(a, b)} & \texttt{a}の\texttt{b}乗 & \\
+        \texttt{abs(a)} & \texttt{a}の絶対値 & \\
+        \texttt{int(a)} & \texttt{a}を\texttt{int}型に変換 & \texttt{a}が\texttt{float}型なら小数点以下切り捨て\\
+        \texttt{float(a)} & \texttt{a}を\texttt{float}型に変換 & \\
+        \texttt{complex(a, b)} & 実部\texttt{a}，虚部\texttt{b}の複素数 & \texttt{a+bj}と同じ \\
+        \texttt{a.conjugate()} & 複素数\texttt{a}の共役複素数 & \\
+        \hline
+    \end{tabular}
+    \label{tab:computations}
+\end{table}
+
+\subsection{真偽値}
+
+{\bf 真偽値（\texttt{bool}）}とは，真（\texttt{True}）か偽（\texttt{False}）の二値だけを取る型である．
+真偽値は条件分岐などで用いられる．
+例えば，二つの数値を比較するとその結果が真偽値として与えられ，条件分岐やループの終了条件に用いられる．
+数値の比較には{\bf 比較演算子}を使う．
+代表的な比較演算子を表\ref{tab:comparison}にまとめておく．
+注意すべき点として，
+\begin{itemize}
+    \item {\bf 浮動小数点数同士の等号比較は信頼できない．}
+\end{itemize}
+
+\begin{table}[H]
+    \centering
+    \caption{主な比較演算子}
+    \begin{tabular}{c|l}
+        \hline
+        比較演算子 & 意味 \\
+        \hline\hline
+        \texttt{a < b} & \texttt{a}は\texttt{b}よりも小さい \\
+        \texttt{a <= b} & \texttt{a}は\texttt{b}以下 \\
+        \texttt{a > b} & \texttt{a}は\texttt{b}よりも大きい \\
+        \texttt{a >= b} & \texttt{a}は\texttt{b}以上 \\
+        \texttt{a == b} & \texttt{a}と\texttt{b}は等しい \\
+        \texttt{a != b} & \texttt{a}と\texttt{b}は等しくない \\
+        \hline
+    \end{tabular}
+    \label{tab:comparison}
+\end{table}
+
+また，主要な\texttt{bool}演算を表\ref{tab:bool}にまとめておく．
+\begin{table}[H]
+    \centering
+    \caption{主な\texttt{bool}演算を表}
+    \begin{tabular}{c|l}
+        \hline
+        演算 & 結果 \\
+        \hline\hline
+        \texttt{not x} & \texttt{x}が偽なら\texttt{True}，そうでなければ\texttt{False} \\
+        \texttt{x or y} & \texttt{x}が真なら\texttt{x}，そうでなければ\texttt{y} \\
+        \texttt{x and y} & \texttt{x}が偽なら\texttt{x}，そうでなければ\texttt{y} \\
+        \hline
+    \end{tabular}
+    \label{tab:bool}
+\end{table}
+
+\section{代表的なコンテナ型}
+
+Pythonのデータ型には{\bf コンテナ型}と呼ばれる複合的な型が存在する．
+よく使われるコンテナ型には，リスト，タプル，集合，辞書などがある．
+
+\subsection{リスト}
+
+Pythonの{\bf リスト}は他のプログラミング言語における{\bf 配列}に相当するデータ型である．
+リストは，カンマで区切られた要素を鉤括弧で囲んで表現される．
+\begin{lstlisting}[caption=リストの例,label=list]
+a = [0, 1, 2, 3, 4]
+b = ["A", "B", "C", "D"]
+c = [0, "ABC", 0.43, "xyz"]
+\end{lstlisting}
+例えば，ソースコード\ref{list}において，\texttt{a}は整数値を要素に持つリストであり，\texttt{b}は文字列を要素に持つリストである．
+\texttt{c}のように異なるデータ型であっても同じリストに格納することができる．
+リストの各要素へのアクセスには{\bf インデックス}と呼ばれる整数値を使う．
+Pythonのインデックスは0から始まる．例えば，\texttt{a[0]}と書くとリスト\texttt{a}の最初の要素である\texttt{0}にアクセスできる．
+代表的なリストに対する演算や処理を表\ref{tab:list}に挙げる．
+\texttt{append}はリスト型変数に紐づいたメソッドである．
+
+\begin{table}[H]
+    \centering
+    \caption{リストに対する基本的な処理}
+    \begin{tabular}{c|c|l}
+        \hline
+        演算 & 出力値 & 意味 \\
+        \hline\hline
+        \texttt{a + b} & リスト & 二つのリストを結合し一つのリストを作る \\
+        \texttt{len(a)} & 整数値 & リスト\texttt{a}の長さ（要素数）を取得 \\
+        \texttt{"x" in a} & \texttt{bool}値 & リスト\texttt{a}に指定した要素が含まれているか \\
+        \texttt{a[0] = "x"} & リスト & リスト\texttt{a}の特定の要素を置換 \\
+        \texttt{a.append("x")} & リスト & リスト\texttt{a}の末尾に要素を追加 \\
+        \hline
+    \end{tabular}
+    \label{tab:list}
+\end{table}
+
+\subsection{タプル}
+
+Pythonにおける{\bf タプル}はリストとよく似たオブジェクトであり，カンマで区切られた要素で表現される．
+\begin{lstlisting}[caption=タプルの例,label=tuple]
+a = 0, 1, 2
+b = (0, 1, 2)
+\end{lstlisting}
+タプルに括弧は不要であるが，上の例のように丸括弧で囲むこともできる．
+リスト同様に，タプルの要素へのアクセスはインデックスで行い，タプル同士の結合も可能である．
+リストとの違いは，一度作成されたタプルは修正できない，という点である．
+このような性質は{\bf イミュータブル}と呼ばれる．
+タプルがよく使われる例として，複数の変数の初期化，
+\begin{lstlisting}[caption=複数の変数の初期化,label=tuple_init]
+a, b = 1, 2
+\end{lstlisting}
+あるいは，変数の値の交換，
+\begin{lstlisting}[caption=変数の値の交換,label=tuple_exchange]
+b, a = a, b
+\end{lstlisting}
+などが挙げられる．
+
+\subsection{集合}
+
+Pythonにおける{\bf 集合}は，数学における集合を表すオブジェクトである．
+集合はその要素を間まで区切り波括弧で囲むことで表現する．
+\begin{lstlisting}[caption=集合の例,label=set]
+s = {0,1,2}
+\end{lstlisting}
+\texttt{set}という関数を使うことで，リストを集合に変換することができる．
+\begin{lstlisting}[caption=リストを集合に変換,label=set_list]
+s = set([0, 1, 2])
+\end{lstlisting}
+集合に対する代表的な演算を表\ref{tab:set}に挙げる．
+
+\begin{table}[H]
+    \centering
+    \caption{集合に対する代表的な演算}
+    \begin{tabular}{c|c|l}
+        \hline
+        演算 & 出力値 & 意味 \\
+        \hline\hline
+        \texttt{s1 | s2} & 集合 & 二つの集合から和集合を作る \\
+        \texttt{s1 \& s2} &集合 & 二つの集合から積集合を作る \\
+        \texttt{s1 \^~s2} & 集合 & 二つの集合の対称差 \\
+        \hline
+    \end{tabular}
+    \label{tab:set}
+\end{table}
+
+\subsection{辞書}
+
+Pythonにおける{\bf 辞書}とは，{\bf キー}と{\bf バリュー}のペアからなるデータ型のことである．
+辞書では，「キー：バリュー」という要素からなり，キーを使って辞書の要素にアクセスする．
+イミュータブルなものであれば何でもキーに使うことができる．
+辞書の例として，以下を考えよう．
+\begin{lstlisting}[caption=辞書の例,label=dictionary]
+d = {"A":203, "B":921, "C":-271}
+\end{lstlisting}
+例えば，\texttt{print(d["A"])}と書くと\texttt{203}が出力される．
+また，上の辞書\texttt{d}に対して，
+\begin{lstlisting}[caption=辞書に要素を追加,label=dictionary_add]
+d["D"] = 334
+\end{lstlisting}
+とすると辞書\texttt{d}に新たな要素\texttt{"D":334}が追加される．
+リストと同様に，辞書のバリューは変更可能である．
+辞書はファイル操作やデータ処理などで有用である．
+
+
+\section{関数}
+
+\subsection{\texttt{def}文}
+
+特定の処理を{\bf 関数}という形で定義することで，その処理を行うコードを毎回書く必要がなくなる．
+関数を定義する場合は，以下のように\texttt{def}文を使ったコードブロックを作ればよい．
+\begin{lstlisting}[caption=関数を定義する,label=deffunc]
+def func(x, y):
+    ans = x + y
+    return ans
+\end{lstlisting}
+ソースコード\ref{deffunc}では，\texttt{func}という名前の関数が定義され，\texttt{x}と\texttt{y}を\texttt{func}に渡すとその和\texttt{ans}が返ってくる．
+\texttt{x}と\texttt{y}のように関数に入力される変数のことを{\bf 引数}と呼び，\texttt{ans}のように関数から返ってくるもののことを{\bf 戻り値}と呼ぶ．
+
+関数の引数にはデフォルトの値を設定することも可能である．
+以下のソースコード\ref{deffunc_opt}を見てみよう．
+\begin{lstlisting}[caption=デフォルト値つきの関数を定義する,label=deffunc_opt]
+def func(x, y=2, z=3):
+    ans = x + y + z
+    return ans
+\end{lstlisting}
+デフォルト値が設定されている引数\texttt{y}と\texttt{z}については，これらを変更したい時だけ引数を指定すれば良い．
+ソースコード\ref{deffunc_opt}の関数\texttt{func}は以下のように使うことができる．
+\begin{lstlisting}[caption=デフォルト値つきの関数の使い方,label=use_func_opt]
+a = func(1)      # a=1+2+3
+a = func(1,4,5)  # a=1+4+5
+a = func(1,z=0)  # a=1+2+0
+a = func(1,z=2,y=3) # a=1+3+2
+\end{lstlisting}
+
+\subsection{ラムダ式}
+
+なお，関数を定義する別の方法として，{\bf ラムダ式}を使う方法がある．
+ラムダ式は\texttt{def}文を使うほどではない単純な処理を定義したい場合に有用である．
+例えば，ソースコード\ref{deffunc_opt}をラムダ式を使って書くと，
+\begin{lstlisting}[caption=ラムダ式の使い方,label=lambda]
+func = lambda x, y=2, z=3: x+y+z
+\end{lstlisting}
+となる．定義した関数の使い方は\texttt{def}文を使った場合と全く同様である．
+
+
+
+
+
+
+\section{ライブラリを\texttt{import}する方法}
+
+Pythonでパッケージやモジュールを呼び出す場合には\texttt{import}文を書く．
+\texttt{import}文の書き方は一意ではなく，多様な書き方が存在する．
+例えば，NumPyを呼び出す場合，最も素朴な\texttt{import}文の書き方は，
+\begin{lstlisting}[caption=NumPyを呼び出す方法,label=import1]
+import numpy
+\end{lstlisting}
+である．
+この場合，以下でNumPyの関数を使う際には\texttt{numpy.関数名()}と書く必要がある．
+
+よく使うパッケージやモジュールを\texttt{import}する際，慣例的な略称をつけることも多い．
+例えば，NumPyの場合だと，
+\begin{lstlisting}[caption=NumPyを呼び出す方法,label=import2]
+import numpy as np
+\end{lstlisting}
+という書き方がよく使われる．
+この場合，以下でNumPyの関数を使う際には\texttt{np.関数名()}と書く必要がある．
+
+パッケージの中の特定のモジュールだけを\texttt{import}する場合には，
+\begin{lstlisting}[caption=NumPyを呼び出す方法,label=import3]
+from numpy import random
+\end{lstlisting}
+と書くことができる．ソースコード\ref{import3}では，例として\texttt{random}モジュールを\texttt{import}した．以下で\texttt{random}モジュールの関数を使う際には，\texttt{random.関数名()}と書けばよい．
+
+
+%\section{よく使うNumPy関数}
+
+%以下では，ソースコード\ref{import2}の\texttt{import}文を仮定し，よく使うNumPy関数を列挙しておく．
+
+
+
+
+
+
+
+\end{document}
