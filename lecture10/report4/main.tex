@@ -1,0 +1,369 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% サンプルコード表示設定 %%%%%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第4回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2024年12月27日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_1}，\ref{sec:problem_2}，\ref{sec:problem_3}，\ref{sec:problem_4}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture10/report4/main.tex}）を活用しても構わない．
+    \item {\bf 課題\ref{sec:problem_4}の設問(B)を除き}，作成したプログラムのソースコードを記載する必要はない．
+    \item 作成したレポートの.pdfファイルをmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_1}
+
+以下の行列の特異値を全て求めよ．
+\footnote{実は，{\bf (1)}から{\bf (4)}の中には具体的な特異値分解をせずとも答えが分かる行列がある．ぜひ考えてみて下さい．}
+\\
+
+\begin{flushleft}
+\qquad\qquad{\bf (1)}
+$\displaystyle
+    \begin{bmatrix}
+        1 & 1 & 1 & 1 \\
+        2 & 3 & 2 & -3 \\
+        0 & 1 & 0 & 1 \\
+    \end{bmatrix}
+$
+\qquad
+{\bf (2)}
+$\displaystyle
+    \begin{bmatrix}
+        1 & 2 \\
+        2 & 1 \\
+    \end{bmatrix}
+$
+\qquad
+{\bf (3)}
+$\displaystyle
+    \frac{1}{\sqrt{2}}
+    \begin{bmatrix}
+        1 & 0 & 1  \\
+        0 & \sqrt{2} & 0  \\
+        1 & 0 & -1  \\
+    \end{bmatrix}
+$
+\newline\newline\\
+
+\qquad\qquad{\bf (4)}
+対角成分が$2$，残りの成分は全て$1$で与えられる$2024$次の正方行列
+\end{flushleft}
+
+
+\section{}
+\label{sec:problem_2}
+
+$m$行$n$列の行列$A$の低ランク近似は，特異値分解によって以下のように与えられる．
+\begin{align}
+\label{eq:svd}
+    A_{ij}
+    =
+    \sum_{k=1}^{\min(m,n)}
+    U_{ik}\sigma_{k}V^{\dag}_{kj}
+    \simeq
+    \sum_{k=1}^{\chi}
+    U_{ik}\sigma_{k}V^{\dag}_{kj}
+    .
+\end{align}
+ここで，$\sigma_{k}$は$k$番目の特異値であり，降順（$\sigma_{1}\ge\sigma_{2}\ge\cdots\ge\sigma_{\min(m,n)}$）で並んでいるものとする．
+特異値の打ち切り次元$\chi$について，$\chi=\min(m,n)$ととれば，式\eqref{eq:svd}の右辺は元の行列$A$を厳密に再現するが，特異値の減衰が十分に早ければ$\chi<\min(m,n)$でも元の行列$A$を十分な精度で復元することができる．
+このことを利用して，モノクロ画像データを圧縮してみよう．
+手続きは以下の通りである．
+
+\clearpage
+
+\begin{enumerate}
+    \item 画像ファイル（ここでは.jpgファイルとする）をモノクロ化し，モノクロ化された画像を行列とみなす．
+    \item この行列に対し，特異値分解による低ランク近似を実行する．
+    \item 低ランク近似で得られた行列をモノクロ画像として再構成する．
+\end{enumerate}
+
+この手続きに従って，\texttt{lecture10/report4/img}の中にある画像を圧縮し，どの程度の$\chi$で元の画像がどのくらい復元されるかPythonを使って調べてみよう．
+ただし，以下の設問では，次のソースコード\ref{lib}のように各種ライブラリが\texttt{import}されていることを前提としている．\\
+\begin{lstlisting}[caption=本課題で必要なライブラリの\texttt{import},label=lib]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import linalg
+from PIL import Image
+\end{lstlisting}
+~\\
+
+\noindent {\bf (A)}
+ソースコード\ref{mono}は\texttt{filename}という名前の画像ファイルをモノクロ化し，モノクロ化された画像を行列へと変換するための関数である．
+この関数を使って\texttt{image0.jpg}を行列へ変換した上で特異値分解を実行し，得られた特異値$\sigma_{i}$について，横軸を$i$，縦軸を$\sigma_{i}$とする図を作成せよ．
+
+\begin{lstlisting}[caption=画像ファイルのモノクロ化とその行列への変換,label=mono]
+def matrix_grayscale(filename):
+    image = Image.open(filename)
+    grayscale_image = image.convert("L")  
+    return np.array(grayscale_image)
+\end{lstlisting}
+~\\
+
+\noindent{\bf (B)}
+元々の\texttt{image0.jpg}に対応する行列および，$\chi=5,25,50,100$で圧縮された行列をモノクロ画像として再構成するコードを作成し，得られたモノクロ画像をレポートに掲載せよ．
+\footnote{\LaTeX で複数の画像を見栄えよく掲載するには\texttt{minipage}環境を使うと良い．興味のある人は\texttt{minipage}環境の使い方を調べてみよ．}
+なお，ソースコード\ref{image}は与えられた行列\texttt{matrix\_image}をモノクロ画像として再構成するための関数である（引数の\texttt{matrix\_image}はNumPy配列にも対応している）．
+必要に応じて自由に使用してもらって構わない．
+\begin{lstlisting}[caption=行列をモノクロ画像として再構成,label=image]
+def plot_single_image(matrix_image):
+    plt.figure(figsize=(8, 6))
+    plt.plot()
+    plt.title("Name")
+    plt.imshow(matrix_image, cmap="gray")
+    plt.axis("off")
+    plt.savefig("visualized_image.pdf")
+\end{lstlisting}
+~\\
+
+\noindent{\bf (C)}
+\texttt{lecture10/report4/img}の中にある\texttt{image0.jpg}以外の画像，
+\footnote{
+\texttt{lecture10/report4/img}の中に格納されている\texttt{image5.jpg}は一様乱数を使って生成されたものである．
+}
+あるいは自分で好きに用意した.jpgファイルに対して，上の設問{\bf (A)}，{\bf (B)}を行ってみよ．
+ただし，圧縮を行う際の$\chi$の値は適宜変更しても構わない．
+
+
+
+\section{}
+\label{sec:problem_3}
+
+ある母集団から，$n$個の標本$X_{1},\cdots,X_{n}$をとる．
+以下では，$n$個の標本は互いに独立であることを仮定する．
+
+得られた$n$個の標本から，母集団が従う確率分布を推定することを考える．
+ある統計量$\theta(X_{1},\cdots,X_{n})$が母集団の{\bf 不偏推定量}であるとは，統計量$\theta$の期待値$E(\theta)$が母集団を特徴づけるパラメタ（母パラメタ）に一致することをいう．
+母集団を特徴づける最も基本的なパラメタは，母集団の分布の平均（{\bf 母平均}）と分散（{\bf 母分散}）である．
+以下では，母平均を$\mu$，母分散を$\sigma^{2}$とする．
+\footnote{
+確率変数$X_{i}~(i=1,\cdots,n)$の期待値を$E(X_{i})$，分散を$V(X_{i})$としたとき，$E(X_{i})=\mu$，$V(X_{i})=\sigma^{2}$であるということ．
+}
+例えば，$n$個の標本に対する標本平均，
+\begin{align}
+\label{eq:mean}
+    \bar{X}=\frac{X_{1}+\cdots+X_{n}}{n}
+\end{align}
+は母平均に対する不偏推定量である．
+実際，
+\begin{align}
+    E(\bar{X})
+    =
+    \frac{1}{n}\sum_{i=1}^{n}E(X_{i})
+    =
+    \frac{1}{n}n\mu
+    =\mu
+\end{align}
+である．
+一方，母分散に対する不偏推定量は，
+\begin{align}
+\label{eq:unbiased}
+    U^{2}
+    =
+    \frac{1}{n-1}\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}
+\end{align}
+であり，$U^{2}$は{\bf 不偏標本分散}（あるいは{\bf 不偏分散}）と呼ばれる．
+
+多くの場合，実験や数値シミュレーションでは，有限個のデータ（標本）から母集団の分布を推定する必要がある．
+母平均や母分散は当然未知なので，標本平均や不偏標本分散からそれらを推定することになる．\\
+
+式\eqref{eq:unbiased}で与えられる$U^{2}$が母分散に対する不偏推定量になっていることを示せ．
+また，通常の標本分散，
+\begin{align}
+    S^{2}
+    =
+    \frac{1}{n}\sum_{i=1}^{n}(X_{i}-\bar{X})^{2}
+\end{align}
+は母分散の不偏推定量ではないことも確認せよ．
+\\
+
+\noindent {\bf (Hint)}
+\begin{itemize}
+    \item 確率変数$X$の分散$V(X)$は，$V(X)=E((X-E(X))^{2})$で定義される．この定義より，$V(X)=E(X^{2})-E(X)^{2}$，$V(a+bX)=b^{2}V(X)$（$a,b$：定数）などが従う．
+    \item 二つの独立な確率変数$X,Y$に対しては，共分散がゼロなので$V(aX+bY)=a^{2}V(X)+b^{2}V(Y)$（$a,b$：定数）が従う．
+    \item いまの問題では，式\eqref{eq:mean}の$\bar{X}$に対して，$ V(\bar{X})=\frac{1}{n^{2}}(n\sigma^{2})=\frac{\sigma^{2}}{n}$となることに着目すると良い．
+\end{itemize}
+
+\section{}
+\label{sec:problem_4}
+
+
+半径が1の$d$次元超球の体積$V_{d}$は，
+\begin{align}
+\label{eq:exact_vd}
+    V_{d}=\frac{\pi^{d/2}}{\Gamma(d/2+1)}
+\end{align}
+で与えられる．
+ただし，$\Gamma(x)$はガンマ関数である．\\
+
+\noindent {\bf (A)}
+$d=1,2,\cdots,20$での$V_{d}$の具体的な数値を求め，横軸を$d$，縦軸を$V_{d}$とした図を作成せよ．\\
+
+
+$d$次元空間の座標を$(x_{1},\cdots,x_{d})$とし，半径1の$d$次元超球の中心をその原点におく．
+いま，$0\le x_{i}\le1~(i=1,\cdots,d)$の領域からなる一辺の長さが1の$d$次元超立方体を考えると，$V_{d}$の$1/2^{d}$の部分がこの超立方体内部に存在している．
+すなわち，この超立方体内部の座標をランダムに選んだ時，選ばれた座標が$d$次元超球の内部に存在している確率は$V_{d}/2^{d}$になることが予想される．
+
+そこで，$[0,1]$に値を取る一様乱数を使って，超立方体内部の座標をランダムに生成することを$N$回行い，選ばれた座標が$d$次元超球の内部に存在した回数$M(<N)$を数え，
+\begin{align}
+\label{eq:estimation}
+    V_{d}\sim2^{d}\frac{M}{N}
+\end{align}
+によって$d$次元超球の体積$V_{d}$を推定してみよう．
+\footnote{
+一般に，乱数を用いた数値計算手法は{\bf Monte Carlo (モンテカルロ)法}と呼ばれる．
+Monte Carlo法という名前は有名なカジノに由来する．
+}
+\\
+
+\noindent {\bf (B)}
+関係式\eqref{eq:estimation}を使って，$N$の値を変えながら三次元球の体積$V_{d=3}$を求め，その結果を横軸を$N$，縦軸を得られた$V_{d=3}$とする図にまとめよ．
+また，作成したプログラムのソースコードもレポートに掲載せよ．
+ただし，図の作成にあたっては以下の要件を満たすようにすること．
+\begin{itemize}
+    \item $N$の最小値は$N=10$，最大値は$N=10^{5}$とし，最低でも10個の異なる$N$について$V_{d=3}$を推定すること．
+    \item $N$はオーダーで増大させること．
+    \item 図の横軸は対数スケールにすること．
+    \item 推定値には1シグマのエラーバーをつけること．
+    \item 図中に$V_{d=3}$の厳密値を記載し，$N$を増やすことで推定値が厳密値に近づいていくことを確認すること．
+    厳密値(\texttt{exact\_value})を記載する際には，\texttt{import matplotlib.pyplot as plt}をしてからソースコード\ref{axhline}のようにすると良い．
+    \begin{lstlisting}[caption=厳密解を直線でプロット,label=axhline]
+    plt.axhline(exact_value, color="red", linestyle="--", label="Exact")
+    \end{lstlisting}
+\end{itemize}
+~\\
+
+\noindent {\bf (C)}
+$d=12$として，上の設問{\bf (B)}に再度取り組んでみよ（ただし，ソースコードの記載は不要である）．
+$N$が小さいうちは推定値が$0$となっているはずである．
+設問{\bf (A)}の結果を踏まえて，その理由を答えよ．\\
+
+\clearpage
+
+\noindent {\bf (D)}
+$N=10^{6}$に固定し，関係式\eqref{eq:estimation}を使って，$d$の値を変えながら$d$次元球の体積$V_{d}$を求め，その結果を横軸を$d$，縦軸を得られた$V_{d}$とする図にまとめよ．
+ただし，図の作成にあたっては以下の要件を満たすようにすること．
+\begin{itemize}
+    \item $d$の最小値は$d=1$，最大値は$d=12$とし，この範囲で次元$d$を一つずつ増やしながら$V_{d}$を推定すること．
+    \item 推定値には1シグマのエラーバーをつけること．
+    \item 式\eqref{eq:exact_vd}を実数値$d$に対して定義された関数とみなし，図中に式\eqref{eq:exact_vd}で与えられる厳密な$V_{d}$を実線によって記載すること．
+\end{itemize}
+~\\
+
+
+\noindent {\bf (E)}
+以上の計算手続き（Monte Carlo法）は，$\tilde{\bm{x}}^{(i)}\in[0,1]^{d}$なる$N$個の一様乱数のセット$\{\tilde{\bm{x}}^{(i)}\}_{i=1,\cdots,N}$を使って，
+\begin{align}
+\label{eq:integral}
+    \int_{[0,1]^{d}}{\rm d}\bm{x}f(\bm{x})
+    \simeq\frac{1}{N}\sum_{i=1}^{N}f(\tilde{\bm{x}}^{(i)})
+\end{align}
+のように左辺の積分を右辺で評価したことに他ならない．
+\footnote{
+具体的には，$f(\bm{x})=2^{d}\Theta\left(1-\sqrt{x_{1}^{2}+\cdots+x_{d}^{2}}\right)$である．
+ただし，$\Theta(x)$は$x>0$ならば$\Theta(x)=1$，それ以外の$x$については$\Theta(x)=0$となる関数（ステップ関数）である．
+}
+中心極限定理によれば，式\eqref{eq:integral}の誤差は，用いたサンプル数$N$に関して$O(1/\sqrt{N})$で小さくなっていくことが結論される．
+
+ところで，式\eqref{eq:integral}の左辺の積分を数値的に計算するという目的であれば，区分求積法のように積分区間を細かく区切って積分を和に書き換えるという方法も考えられる．
+例えば，$[0,1]$区間を$K$個の微小区間に分割した場合，それぞれの区間の中点$x_{i}=(2i-1)/2K~(i=1,\cdots,K)$を使って，以下のように一次元積分を評価することができる．
+\begin{align}
+\label{eq:discretize}
+    \int^{1}_{0}{\rm d}xf(x)
+    \simeq
+    \frac{1}{K}\sum_{i=1}^{K}f(x_{i})
+\end{align}
+この方法は合成中点則と呼ばれ，その近似誤差は$O(K^{-2})$で小さくなっていく．
+
+式\eqref{eq:discretize}を$d$次元積分に応用した場合，積分評価に用いられる総分点数$N$は$N=K^{d}$になることに注意して，合成中点則における近似誤差の$N$に関するスケーリングを見積もってみよ．
+その結果から，$d=1$の場合にはMonte Carlo法と合成中点則のどちらの方が効率が良いと言えるだろうか．
+また，$d$が大きい場合はどうだろうか．
+
+
+\section{アンケート}
+
+以下の項目は成績評価とは無関係です．\\
+
+\noindent {\bf (A)}
+授業（全10回）の難易度について，以下の中から最も近いと感じる番号を書いてください．
+\begin{enumerate}
+    \item 簡単すぎる 
+    \item 比較的簡単である
+    \item ちょうど良い
+    \item 比較的難しい
+    \item 難しすぎる
+\end{enumerate}
+
+\noindent {\bf (B)}
+レポート課題（全4回）の難易度について，以下の中から最も近いと感じる番号を書いてください．
+\begin{enumerate}
+    \item 簡単すぎる
+    \item 比較的簡単である
+    \item ちょうど良い
+    \item 比較的難しい
+    \item 難しすぎる
+\end{enumerate}
+
+\noindent {\bf (C)}
+この授業に対する感想，コメントなどがあれば自由に記述して下さい．
+（改善すべき点，学んでみたいプログラミング言語，計算物理学の授業で学んでみたい（みたかった）内容，... etc．他のことでも構いません．）
+
+
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
