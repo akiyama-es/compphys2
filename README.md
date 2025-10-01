@@ -2,7 +2,7 @@
 
 ### はじめに
 * [シラバス](https://kdb.tsukuba.ac.jp/syllabi/2025/FCC2345/jpn/0)
-* [Linuxデスクトップをリモートで使う方法][](./vnc/vnc.pdf)
+* [Linuxデスクトップをリモートで使う方法](./vnc/vnc.pdf)
 * [LaTeX入門][](./introduction_latex/introduction_latex.pdf)
 * [Pythonに関するクイックリファレンス][](./quick_ref_python/quick_ref_python.pdf)
 
