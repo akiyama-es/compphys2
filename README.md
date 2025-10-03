@@ -7,7 +7,7 @@
 * [Pythonに関するクイックリファレンス][](./quick_ref_python/quick_ref_python.pdf)
 
 ### 講義・演習資料
-* 10/3  : [第1回：オリエンテーション・計算機システム（Linux）の使い方][](lecture1/lecture_material_1.pdf)
+* 10/3  : [第1回：オリエンテーション・計算機システム（Linux）の使い方](lecture1/lecture_material_1.pdf)
 * 10/10 : [第2回：コマンド操作とデータの可視化][](lecture2/lecture_material_2.pdf)
 * 10/17 : [第3回：LaTeXによる科学文書作成][](lecture3/lecture_material_3.pdf)
 * 10/24 : [第4回：GitとGitHubの活用][](lecture4/lecture_material_4.pdf)
