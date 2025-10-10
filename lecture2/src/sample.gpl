@@ -1,0 +1,24 @@
+reset
+set terminal pdfcairo color enhanced font "Helvatica,18"        
+set output "output_file_name.pdf"                               
+set title font "Times,14"                                       
+set title "Title"                                               
+set key font "Times,12"                                         
+set key top left                                                
+set xlabel "x label"                                            
+set ylabel "y label"                                            
+set xlabel font "Times,14"                                      
+set ylabel font "Times,14"                                     
+set xtics font "Times,14"                                       
+set ytics font "Times,14"                                       
+#set xrange [0:1]                                              
+#set yrange [0:1]                                               
+#set xtics 1                                                    
+#set ytics 1                                                    
+#set format x "%.1f"                                            
+#set format y "%.1t{/Symbol \264}10^{%T}"                       
+#set logscale x                                                 
+#set logscale y                                                 
+plot "input_file_name" using x:y pt 1 lc 1 w p title "key"      
+
+set terminal pop
