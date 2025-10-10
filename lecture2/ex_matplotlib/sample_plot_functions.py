@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def make_plot(cxs, cys, dxs, dys, output_figname):
+def make_plot(cxs, cys, dxs, dys, output="plot.pdf"):
     plt.rc('text', usetex=True)
     plt.rc('font', family='serif')
     plt.figure(figsize=(8, 6))
@@ -15,7 +15,7 @@ def make_plot(cxs, cys, dxs, dys, output_figname):
     plt.legend()
     #plt.grid(True)
     #plt.show()
-    plt.savefig(output_figname)
+    plt.savefig(output)
     plt.close()
 
 cxs = [0.1*i for i in range(100)]
@@ -24,4 +24,4 @@ cys = [np.sin(x) for x in cxs]
 dxs = [0.1*i for i in range(100)]
 dys = [np.cos(x) for x in dxs]
 
-make_plot(cxs, cys, dxs, dys, "functions.pdf")
+make_plot(cxs, cys, dxs, dys, output="output_filename.pdf")
