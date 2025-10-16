@@ -1,0 +1,39 @@
+#!/usr/bin/env perl
+
+$latex = 'platex -synctex=1 -halt-on-error -file-line-error %O %S';
+# platexコマンドにいくつかのオプションをつけておく
+# -synctex=1 : プレビューからソースコードの該当箇所へリンクする
+# -halt-on-error : コンパイル中にエラーが発生したら、コンパイルを終了する
+# -file-line-error : エラーが発生した場所（何行目か）を表示
+$max_repeat = 5;
+# 最大5回コンパイルする（複数回コンパイルが必要な場合があるため）
+$bibtex = 'pbibtex %O %S';
+# BiblatexのバックエンドにBibTeXを使用するときのコマンドを指定
+# 日本語の文書ではpbibtexをよく使う
+$biber = 'biber --bblencoding=utf8 -u -U --output_safechars %O %S';
+# Bibtexのバックエンドにbiberを使用するときのコマンド
+# --bblencoding=utf8 : bblファイル（参考文献のファイル）の文字コードをUTF-8にする
+# -u -U : 入力ファイルと出力ファイルの文字コードをUTF-8にする
+# –output_safechars : ユニコード文字をLaTeXの命令を使ってエンコードした形で出力させる
+$makeindex = 'mendex %O -o %D %S';
+# 索引を作成するときのコマンドを指定
+# \usepackage{makeidx}を使うときに必要
+$dvipdf = 'dvipdfmx %O -o %D %S';
+# dviファイルをpdfファイルへ変換
+$pdf_mode = 3;
+# pdfファイルの出力形式を指定
+
+$pvc_view_file_via_temporary = 0;
+if ($^O eq 'linux') {
+    $dvi_previewer = "xdg-open %S";
+    $pdf_previewer = "xdg-open %S";
+} elsif ($^O eq 'darwin') {
+    $dvi_previewer = "open %S";
+    $pdf_previewer = "open %S";
+} else {
+    $dvi_previewer = "start %S";
+    $pdf_previewer = "start %S";
+}
+# プレビュー
+
+$clean_full_ext = "%R.synctex.gz"

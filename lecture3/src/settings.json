@@ -1,0 +1,54 @@
+{
+    // TeX関連の設定 //
+    "[tex]": {
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.tabSize": 2
+    },
+
+    "[latex]": {
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.tabSize": 2
+    },
+
+    "[bibtex]": {
+        "editor.tabSize": 2
+    },
+
+    // LaTeX Workshopの設定 //
+
+    "latex-workshop.intellisense.package.enabled": true,
+
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.dvi",
+        "*.fdb_latexmk",
+        "*.fls",
+        "*.log",
+        "*.out",
+        "*.synctex.gz"
+    ],
+
+    "latex-workshop.latex.outDir": "output",
+
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        },
+    ],
+
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-file-line-error",
+                "-interaction=nonstopmode",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+        },
+    ],
+}
