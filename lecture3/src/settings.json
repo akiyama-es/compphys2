@@ -15,7 +15,6 @@
     },
 
     // LaTeX Workshopの設定 //
-
     "latex-workshop.intellisense.package.enabled": true,
 
     "latex-workshop.latex.clean.fileTypes": [
