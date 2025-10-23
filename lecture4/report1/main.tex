@@ -1,0 +1,245 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第1回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2025年11月7日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_1}，\ref{sec:problem_2}，\ref{sec:problem_3}，\ref{sec:problem_4}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture4/report1/main.tex}）を活用しても構わない．
+    \item 読みやすく，体裁の整ったレポート作成を心がけて欲しい．
+    \item 作成したレポートの.pdfファイルをmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_1}
+
+好きな方程式を一つ書け．
+また，その式がどういう方程式なのか簡潔な説明を書け．
+例えば，式の中の記号の意味，項の意味，どのような分野で使われているか，それを解くと何が分かるか，などを書いてもらえれば良い．
+
+\section{}
+\label{sec:problem_2}
+
+第2回演習で配布したPythonスクリプト（\texttt{lecture2/src/sample\_plot\_functions.py}）を使って, 
+\begin{align}
+\label{eq:problem_2}
+    f(x)=
+    \exp\left[\left(x\sin(\alpha x)\right)^{2}\right]
+\end{align}
+のグラフを描け．
+ただし，グラフの作成にあたっては，以下の点を満たすようにすること．
+\begin{itemize}
+    \item \texttt{sample\_plot\_functions.py}で定義されている「関数」\texttt{make\_plot}では二つの関数を同時にプロットできる．そこで，式\eqref{eq:problem_2}の関数について，(i)~$\alpha=1$の場合，および(ii)~$1<\alpha\le10$の場合の二つをプロットせよ．(ii)の場合については，$1<\alpha\le10$の範囲内で具体的な$\alpha$の値を一つ各自で決めること．なお，選んだ$\alpha$の値は必ずレポート中に明記せよ．
+    \item 式\eqref{eq:problem_2}の関数を\texttt{sample\_plot\_functions.py}でプロットするためには，\texttt{cys}と\texttt{dys}の中身を編集する必要がある．例えば，(i)の場合，式\eqref{eq:problem_2}の関数をスクリプト上で実装するには，「\texttt{np.exp(0.5*(x*np.sin(x))**2)}」と書けば良い．
+    \item \texttt{make\_plot}の\texttt{plt.title}を編集し，グラフのタイトルに式\eqref{eq:problem_2}を書け．スクリプト上で\LaTeX 表記を使う場合，「\texttt{r'\$}ここに数式を書く\texttt{\$'}」の記法に留意せよ（配布したスクリプト中の\texttt{plt.xlabel}や\texttt{plt.ylabel}の行で既にこの記法が使われている）．
+    \item \texttt{make\_plot}の\texttt{plt.plot}の\texttt{label}を編集し，「$\alpha=1$」のように$\alpha$の値をグラフ上に明記せよ．
+    \begin{itemize}
+        \item （任意）配布したスクリプトでは，「\texttt{'r-'}」（赤い実線），「\texttt{'b--'}」（青い破線）を用いているが，各自で\texttt{matplotlib}で使える線の種類や色を調べ，見やすいように自由に変更して良い．
+    \end{itemize}
+    \item \texttt{make\_plot}の\texttt{plt.title}，\texttt{plt.xlabel}, \texttt{plt.ylabel}において，\texttt{fontsize}はすべて「12」にせよ．
+    \item \texttt{make\_plot}でコメントアウトされている\texttt{plt.xlim}を有効にし，\texttt{plt.xlim(0,10)}と変更せよ．これにより，作成されるプロットの$x$軸の範囲が「0」から「10」までに固定される．
+    \item \texttt{make\_plot}の\texttt{plt.figure}から\texttt{plt.savefig}までの間で，「\texttt{plt.yscale('log')}」の一文を加え，$y$軸を対数スケールに変更せよ．なお，Pythonスクリプトではインデント（空白）も意味を持つため，「\texttt{plt.yscale('log')}」の一行を挿入する際には，行頭が他の「\texttt{plt}」から始まる文と揃うようにせよ．
+\end{itemize}
+なお，(ii)で選んだ$\alpha$の値によっては，グラフが滑らかに描かれない場合がある．
+その場合，下記の修正を試みよ．
+\begin{itemize}
+    \item \texttt{sample\_plot\_functions.py}では，\texttt{cys}と\texttt{dys}の中で関数の値が計算されているが，これらの関数の値は\texttt{cxs}，\texttt{dxs}で指定された$x$軸の値でのみ計算される．
+    配布したスクリプトでは，$0.0,~0.1,~0.2, \cdots, 9.9$のように，$0.1$刻みで分割された100個の$x$軸の値が設定されている．
+    もし，プロットしたい関数が激しく振動する場合には，$x$軸の刻み幅を十分に小さく取ることで，その$x$依存性を高解像度で可視化できるはずである．
+    例えば，0.01刻みで分割された1000個の$x$軸の値に修正してみると良い．
+\end{itemize}
+また，\LaTeX でレポートにまとめる際には，以下の点を満たすようにすること．
+\begin{itemize}
+    \item $y$軸を対数スケールに変更したことでどのような恩恵があったかを記述せよ（例えば，対数スケールを使わない場合と比較してみよ）．
+    \item $x$軸の刻み幅を変更した場合，それによってどのような恩恵があったかを記述せよ．
+    \item 「\LaTeX 入門」の6節を参照し，図には「課題2の関数のプロット」というキャプションをつけること．
+    \item 「\LaTeX 入門」の7節を参照し，\texttt{\textbackslash label}と\texttt{\textbackslash ref}を使って，「図$*$（図の番号）は$\circ\circ\circ$を表している．」といった文を本文中に書くこと．
+\end{itemize}
+
+
+
+\section{}
+\label{sec:problem_3}
+
+第2回演習で，日本の総人口の推移を表す図を\texttt{gnuplot}で作成した．
+その時に使った人口推移のデータファイルには，各都道府県の人口推移のデータも含まれている．
+このデータファイル（\texttt{lecture2/data/population.dat}）を使い，好きな都道府県を一つ選んで，その都道府県の人口推移を表す図を作成せよ．
+図の作成にあたっては，以下の点を満たすようにすること．
+\begin{itemize}
+    \item 図の横軸を西暦とし，縦軸を人口とすること．
+    \item 人口は，総数，男性，女性の三つを同じ図にプロットし，それぞれに異なるシンボルと色を用いること．
+    \item 何の図か一目で分かるように，軸のラベルと凡例(key)を付けること．
+\end{itemize}
+また，\LaTeX でレポートにまとめる際には，以下の点を満たすようにすること．
+\begin{itemize}
+    \item 「\LaTeX 入門」の6節を参照し，図の挿入時にキャプションをつけること．
+    \item 「\LaTeX 入門」の7節を参照し，\texttt{\textbackslash label}と\texttt{\textbackslash ref}を使って，「図$*$（図の番号）は$\circ\circ\circ$の人口の推移を表している．」といった文を本文中に書くこと．
+    \item 「\LaTeX 入門」の9節を参照し，使用したデータファイルの出典を参考文献として記載すること．
+    \texttt{\textbackslash cite}を使って，「図$*$（図の番号）は国勢調査[$*$（参考文献の番号）]のデータに基づく．」といった文を本文中に書けば良い．
+    また，参考文献情報については，このレポートと共に配布された.bibファイルを使って良い（\texttt{lecture4/report1/bib/ref.bib}）．
+\end{itemize}
+
+
+\section{}
+\label{sec:problem_4}
+
+次のような$d$次元の運動量空間上の関数を考えよう．
+\begin{align}
+\label{eq:correlator_f}
+    f(\bm{k})=\frac{1}{|\bm{k}|^{2}+a^{2}}
+\end{align}
+ここで，$\bm{k}=(k_{1},k_{2},\cdots,k_{d})$は$d$次元のベクトルであり，
+$|\bm{k}|^{2}=\sum_{i=1}^{d}k_{i}^{2}$である．
+$a$は正の実数とする．
+以下の手順に沿って，式\eqref{eq:correlator_f}のFourier変換，
+\begin{align}
+\label{eq:correlator_g}
+    g(\bm{r})
+    =
+    \left(\prod_{i=1}^{d}\int^{\infty}_{-\infty}\mathrm{d}k_{i}\right)
+    \mathrm{e}^{\mathrm{i}\bm{k}\cdot\bm{r}}
+    f(\bm{k})
+\end{align}
+を計算しよう．
+なお，$\bm{r}=(r_{1},r_{2},\cdots,r_{d})$は$d$次元の位置ベクトルで，
+$\bm{k}\cdot\bm{r}=\sum_{i=1}^{d}k_{i}r_{i}$
+である．\\
+
+\noindent {\bf (A)}
+以下の等式を示せ．
+\begin{align}
+\label{eq:exp}
+    \frac{1}{q}
+    =
+    \int^{\infty}_{0}\mathrm{d}t~\mathrm{e}^{-tq}
+\end{align}
+\\
+
+\noindent {\bf (B)}
+式\eqref{eq:exp}を使うと，式\eqref{eq:correlator_g}は，
+\begin{align}
+\label{eq:correlator_g_exp}
+    g(\bm{r})
+    =
+    \left(\prod_{i=1}^{d}\int^{\infty}_{-\infty}\mathrm{d}k_{i}\right)
+    \int^{\infty}_{0}\mathrm{d}t
+    ~\mathrm{e}^{-t\left(|\bm{k}|^{2}+a^{2}\right)+\mathrm{i}\bm{k}\cdot\bm{r}}
+\end{align}
+と書き換えることができる．
+ここで，積分の順序を交換し，各$k_{i}$に関する積分を先に実行しよう．
+式\eqref{eq:correlator_g_exp}の各$k_{i}$積分が
+\begin{align}
+\label{eq:int_k}
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\mathrm{e}^{-tk_{i}^{2}+\mathrm{i}k_{i}r_{i}}
+    =
+    \sqrt{\frac{\pi}{t}}
+    \exp\left[
+        -\frac{r_{i}^{2}}{4t}
+    \right]
+\end{align}
+となることを示せ．
+ただし，以下のGauss積分は既知として良い．
+\begin{align}
+    \int^{\infty}_{-\infty}\mathrm{d}k
+    ~\mathrm{e}^{-\alpha k^{2}}
+    =
+    \sqrt{\frac{\pi}{\alpha}}
+\end{align}
+\\
+
+\noindent {\bf (C)}
+式\eqref{eq:int_k}を使うと，式\eqref{eq:correlator_g_exp}は，
+\begin{align}
+\label{eq:correlator_g_bessel}
+    g(\bm{r})
+    =
+    \pi^{d/2}
+    \int^{\infty}_{0}\mathrm{d}t
+    ~t^{-d/2}
+    \exp\left[
+        -a^{2}t-\frac{|\bm{r}|^{2}}{4t}
+    \right]
+\end{align}
+となる．
+この積分は第2種変形Bessel関数$K_{\nu}(z)$を使って表すことができる．
+その積分表示は，
+\begin{align}
+    K_{\nu}(z)
+    =
+    \frac{1}{2}\left(\frac{z}{2}\right)^{\nu}
+    \int^{\infty}_{0}\mathrm{d}t
+    ~t^{-\nu-1}
+    \exp\left[
+        -t-\frac{z^{2}}{4t}
+    \right]
+\end{align}
+である．
+このとき，式\eqref{eq:correlator_g_bessel}が，
+\begin{align}
+    g(\bm{r})
+    =
+    2\pi^{d/2}a^{d-2}\left(\frac{2}{a|\bm{r}|}\right)^{d/2-1}
+    K_{d/2-1}(a|\bm{r}|)
+\end{align}
+となることを示せ．
+\\
+%\clearpage
+
+\noindent {\bf (D)}
+$|\bm{r}|$が十分大きい場合，$K_{d/2-1}(a|\bm{r}|)$は，
+\begin{align}
+    K_{d/2-1}(a|\bm{r}|)
+    \sim
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{\sqrt{a|\bm{r}|}}
+\end{align}
+の漸近形で書ける．
+$|\bm{r}|$が十分大きい場合，$g(\bm{r})$の$|\bm{r}|$依存性が以下で与えられることを示せ．
+\begin{align}
+\label{eq:ornstein_zernike}
+    g(\bm{r})
+    \sim
+    \frac{1}{|\bm{r}|^{(d-1)/2}}
+    \mathrm{e}^{-a|\bm{r}|}
+\end{align}
+式\eqref{eq:ornstein_zernike}は{\bf Ornstein-Zernike（オルンシュタイン-ゼルニケ）の公式}と呼ばれ，二粒子の相関を表す関数（相関関数）の長距離における典型的な振る舞いを記述する．
+
+
+\section*{アンケート}
+
+この項目は成績とは無関係です．
+\href{https://forms.gle/45Znp8u4y9uLkKJA8}{こちら（クリック）}のGoogleフォームよりアンケートにご協力ください．
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
