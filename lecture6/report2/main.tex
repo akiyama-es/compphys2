@@ -1,0 +1,200 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% サンプルコード表示設定 %%%%%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第2回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2025年11月28日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_1}，\ref{sec:problem_2}，\ref{sec:problem_3}，\ref{sec:problem_4}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture6/report2/main.tex}）を活用しても構わない．
+    \item 読みやすく，体裁の整ったレポート作成を心がけて欲しい．
+    \item 作成したレポートの.pdfファイルと{\bf 課題\ref{sec:problem_1}，課題\ref{sec:problem_2}，課題\ref{sec:problem_4}で使用したソースコード（.pyファイル）}をmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_1}
+
+Leibniz（ライプニッツ）の公式，
+\begin{align}
+    \sum_{n=0}^{\infty}\frac{(-1)^{n}}{2n+1}
+    =
+    \frac{\pi}{4}
+\end{align}
+を使って，$\pi$の近似値を次のように得ることを考える．
+\begin{align}
+    \pi
+    \simeq
+    4\sum_{n=0}^{N}\frac{(-1)^{n}}{2n+1}.
+\end{align}
+$N=10^{5}$の時の$\pi$の近似値を求めよ．
+
+
+\section{}
+\label{sec:problem_2}
+
+Wallis（ウォリス）の公式
+\begin{align}
+    \prod_{n=1}^{\infty}
+    \left(
+        \frac{2n}{2n-1}
+        \cdot
+        \frac{2n}{2n+1}
+    \right)
+    =
+    \frac{\pi}{2}
+\end{align}
+を使って，$\pi$の近似値を次のように得ることを考える．
+\begin{align}
+    \pi
+    \simeq
+    2\prod_{n=1}^{N}
+    \left(
+        \frac{2n}{2n-1}
+        \cdot
+        \frac{2n}{2n+1}
+    \right).
+\end{align}
+$N=10^{5}$の時の$\pi$の近似値を求めよ．
+
+
+\section{}
+\label{sec:problem_3}
+
+課題\ref{sec:problem_1}，\ref{sec:problem_2}で求めた$N=10^{5}$での$\pi$の近似値について，どちらの方が真の$\pi$に近い結果を与えているか調べよ．
+\footnote{\texttt{lecture\_material\_5.pdf}の67ページ参照.
+}
+
+\section{}
+\label{sec:problem_4}
+
+$f(x)$および$g(x)$として，異なる初等関数を自由に二つ選び，以下の課題に取り組んでみよ．\\
+
+\begin{enumerate}
+    \item[(1)] 自分の選んだ初等関数を明記した上で，$f(x)$，$g(x)$のTaylor展開を書け．
+\end{enumerate}
+
+\begin{enumerate}   
+    \item[(2)] 以下のように，次数$N$で打ち切られた$f(x)$のTaylor展開を使って$f(a)$の近似値を求めることを考える．
+    ただし，$a$は$f(x)$のTaylor展開の収束半径内にある数値とし，自由に選んでよい．
+    \begin{itemize}
+        \item 与えられた$a$と$N$に対して，次数$N$で打ち切られたTaylor展開から$f(a)$の近似値を求めるプログラムを作成すること．
+        例えば，ソースコード\ref{example}は，$f(x)={\rm e}^{x}$の場合のサンプルプログラムである．
+        20行目以下では，定義した関数\texttt{taylor$\_$exp}の引数を\texttt{for}文で回すことで，$N=1,2,\cdots,10$までの結果が得られるようになっている．
+        \item Pythonで初等関数を使う場合，\texttt{math}モジュールにそれらが用意されている．
+        \texttt{math}モジュールで使える数学関数については，\url{https://docs.python.org/ja/3/library/math.html}を参照するとよい．
+        \item 「\LaTeX 入門」の5節，あるいはこの.pdfファイルのソースファイルを参照し，得られた結果を表\ref{tab:sample}のようにまとめよ．
+        ただし，下の行に行くほど打ち切り次数$N$の値が大きくなるように並べること．
+        なお，$N$の値は好きに選べばよいが，最低でも三つは選んで表に載せること．
+        また，一番下の行には$N=\infty$の場合，すなわち$f(a)$の厳密な値を記載せよ．
+    \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}   
+    \item[(3)] $g(x)$についても問(2)と同様のことを行え．
+    \footnote{
+    すなわち，次数$N$で打ち切られた$g(x)$のTaylor展開を使って$g(b)$の近似値を求め，厳密な値へ近づいていくことを確認せよ．ただし，$b$は$g(x)$のTaylor展開の収束半径内にある数値とし，自由に選んでよい．
+    }
+\end{enumerate}
+
+\begin{table}[H]
+    \centering
+    \caption{$f(a)$のTaylor展開による近似}
+    \begin{tabular}{c|c}
+        \hline
+        打ち切り次数$N$ & $f(a)$の近似値  \\
+        \hline\hline
+        2 & 得られた近似値 \\ 
+        4 & 得られた近似値 \\ 
+        6 & 得られた近似値 \\ 
+        8 & 得られた近似値 \\ 
+        10 & 得られた近似値 \\ 
+        $\infty$ & 厳密な値 \\ 
+        \hline
+    \end{tabular}
+    \label{tab:sample}
+\end{table}
+
+
+
+\clearpage
+
+\begin{lstlisting}[caption=指数関数の場合の例,label=example]
+import math
+
+def taylor_exp(value_x,num_terms):
+    acc = 0
+    num = 1
+    den = 1
+
+    for index in range(num_terms):
+        nextTerm = num / den
+        acc = acc + nextTerm
+        num = num * value_x
+        den = den * (index+1)
+
+    return acc
+
+value_x = 0.1
+exact = math.exp(value_x)
+print("Exact = ",exact)
+
+for num_terms in range(1,10):
+    approximation = taylor_exp(value_x,num_terms)
+    print(num_terms,approximation,math.fabs(exact-approximation))
+\end{lstlisting}
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
