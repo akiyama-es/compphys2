@@ -19,7 +19,7 @@
 * 12/19 : [第10回：課題演習][](lecture10/lecture_material_10.pdf)
 
 ### レポート課題
-* [第1回レポート課題](lecture4/report1.pdf)
+* [第1回レポート課題](lecture4/report1.pdf)&emsp;[[解答例](lecture4/sol/report1/output/main.pdf)]
 * [第2回レポート課題](lecture6/report2.pdf)
 * [第3回レポート課題][](lecture8/report3.pdf)
 * [第4回レポート課題][](lecture10/report4.pdf)
