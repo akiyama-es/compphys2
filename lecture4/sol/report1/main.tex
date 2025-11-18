@@ -1,0 +1,241 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II第1回レポート課題 解答例}
+\author{名前\\学籍番号\\所属}
+\date{\today}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\section{}
+略.
+
+
+\section{}
+
+図\ref{fig:functions}は式\eqref{eq:problem_2}で与えられる関数$f(x)$を表している.
+\begin{align}
+\label{eq:problem_2}
+    f(x)=
+    \exp\left[\left(x\sin(\alpha x)\right)^{2}\right].
+\end{align}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{fig/functions.pdf}
+    \caption{課題2の関数のプロット}
+    \label{fig:functions}
+\end{figure}
+
+\section{}
+
+図\ref{fig:ibraki}は茨城県の人口の推移を表している.
+図\ref{fig:ibraki}は国勢調査\cite{e-Stat}のデータに基づく.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=1]{fig/ibaraki.pdf}
+    \caption{課題3のプロット}
+    \label{fig:ibraki}
+\end{figure}
+
+\section{}
+
+\noindent {\bf (A)}
+$q>0$の時,
+\begin{align}
+\label{eq:exp}
+    \int^{\infty}_{0}\mathrm{d}t~\mathrm{e}^{-tq}
+    =
+    \left[-\frac{1}{q}\mathrm{e}^{-tq}\right]^{\infty}_{0}
+    =
+    \frac{1}{q}
+\end{align}
+となる.
+\\
+
+\noindent {\bf (B)}
+被積分関数になっている指数関数の肩を平方完成すれば良い.
+\begin{align}
+\label{eq:int_k}
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\mathrm{e}^{-tk_{i}^{2}+\mathrm{i}k_{i}r_{i}}
+    &=
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\exp\left[
+        -t\left\{
+            \left(
+                k_{i}-\frac{\mathrm{i}r_{i}}{2t}
+            \right)^{2}
+            +
+            \frac{r_{i}^{2}}{4t^{2}}
+        \right\}
+    \right]
+    \nonumber\\
+    &=
+    \exp\left[
+        -\frac{r_{i}^{2}}{4t}
+    \right]
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\exp\left[
+        -t\left(
+            k_{i}-\frac{\mathrm{i}r_{i}}{2t}
+        \right)^{2}
+    \right]
+    \nonumber\\
+    &=
+    \sqrt{\frac{\pi}{t}}
+    \exp\left[
+        -\frac{r_{i}^{2}}{4t}
+    \right].
+\end{align}
+なお, 最後の等式はGauss積分による.
+\\
+
+\noindent {\bf (C)}
+\begin{align}
+\label{eq:correlator_g_exp}
+    g(\bm{r})
+    &=
+    \left(\prod_{i=1}^{d}\int^{\infty}_{-\infty}\mathrm{d}k_{i}\right)
+    \int^{\infty}_{0}\mathrm{d}t
+    ~\mathrm{e}^{-t\left(|\bm{k}|^{2}+a^{2}\right)+\mathrm{i}\bm{k}\cdot\bm{r}}
+    \nonumber\\
+    &=
+    \int^{\infty}_{0}\mathrm{d}t
+    ~\mathrm{e}^{-a^{2}t}
+    \prod_{i=1}^{d}
+    \int^{\infty}_{-\infty}\mathrm{d}k_{i}
+    ~\mathrm{e}^{-tk_{i}^{2}+\mathrm{i}k_{i}r_{i}}
+    \nonumber\\
+    &=
+    \int^{\infty}_{0}\mathrm{d}t
+    ~\mathrm{e}^{-a^{2}t}
+    \prod_{i=1}^{d}
+    \sqrt{\frac{\pi}{t}}
+    \exp\left[
+        -\frac{r_{i}^{2}}{4t}
+    \right]
+    \nonumber\\
+    &=
+    \pi^{d/2}
+    \int^{\infty}_{0}\mathrm{d}t
+    ~t^{-d/2}
+    \exp\left[
+        -a^{2}t-\frac{|\bm{r}|^{2}}{4t}
+    \right].
+\end{align}
+ここで, $t=s/a^{2}$と変数変換すると,
+\begin{align}
+    g(\bm{r})
+    &=
+    \pi^{d/2}
+    \int^{\infty}_{0}\frac{\mathrm{d}s}{a^{2}}
+    ~\left(
+        \frac{s}{a^{2}}
+    \right)^{-d/2}
+    \exp\left[
+        -s-\frac{(a|\bm{r}|)^{2}}{s}
+    \right]
+    \nonumber\\
+    &=
+    \pi^{d/2}a^{d-2}
+    \int^{\infty}_{0}\mathrm{d}s
+    ~s^{-d/2}
+    \exp\left[
+        -s-\frac{(a|\bm{r}|)^{2}}{s}
+    \right]
+    \nonumber\\
+    &=
+    \pi^{d/2}a^{d-2}
+    \frac{
+        \frac{1}{2}\left(
+            \frac{a|\bm{r}|}{2}
+        \right)^{d/2-1}
+    }{
+        \frac{1}{2}\left(
+            \frac{a|\bm{r}|}{2}
+        \right)^{d/2-1}
+    }
+    \int^{\infty}_{0}\mathrm{d}s
+    ~s^{-(d/2-1)-1}
+    \exp\left[
+        -s-\frac{(a|\bm{r}|)^{2}}{s}
+    \right]
+    \nonumber\\
+    &=
+    \pi^{d/2}a^{d-2}
+    \frac{
+        K_{d/2-1}(a|\bm{r}|)
+    }{
+        \frac{1}{2}\left(
+            \frac{a|\bm{r}|}{2}
+        \right)^{d/2-1}
+    }
+    \nonumber\\
+    &=
+    2\pi^{d/2}a^{d-2}
+    \left(\frac{2}{a|\bm{r}|}\right)^{d/2-1}
+    K_{d/2-1}(a|\bm{r}|).
+\end{align}
+\\
+
+\noindent {\bf (D)}
+$|\bm{r}|$が十分大きい場合, $K_{d/2-1}(a|\bm{r}|)$は, 
+\begin{align}
+    K_{d/2-1}(a|\bm{r}|)
+    \sim
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{\sqrt{a|\bm{r}|}}
+\end{align}
+と振る舞うので,
+\begin{align}
+    g(\bm{r})
+    &=
+    2\pi^{d/2}a^{d-2}
+    \left(\frac{2}{a|\bm{r}|}\right)^{d/2-1}
+    K_{d/2-1}(a|\bm{r}|)
+    \nonumber\\
+    &\sim
+    2\pi^{d/2}a^{d-2}
+    \left(\frac{2}{a|\bm{r}|}\right)^{d/2-1}
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{\sqrt{a|\bm{r}|}}
+    \nonumber\\
+    &=
+    2^{d/2}\pi^{d/2}a^{d-2}
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{\sqrt{a|\bm{r}|}^{d-1}}
+\end{align}
+となり, $g(\bm{r})$の$|\bm{r}|$依存性は,
+\begin{align}
+    g(\bm{r})
+    \sim
+    \frac{\mathrm{e}^{-a|\bm{r}|}}{|\bm{r}|^{(d-1)/2}}
+\end{align}
+で与えられる.
+
+
+\bibliographystyle{unsrt}
+\bibliography{bib/ref}
+
+\end{document}
