@@ -2,7 +2,7 @@ reset
 set terminal pdfcairo color enhanced font "Helvatica,18"        
 set output "ibaraki.pdf"                               
 set title font "Times,14"                                       
-set title "Title"                                               
+set title "茨城県の人口推移"                                               
 set key font "Times,12"                                         
 set key top left                                                
 set xlabel "西暦"                                            
@@ -16,9 +16,9 @@ set ytics font "Times,14"
 #set xtics 1                                                    
 #set ytics 1                                                    
 #set format x "%.1f"                                            
-#set format y "%.1t{/Symbol \264}10^{%T}"                       
+set format y "%.1t{/Symbol \264}10^{%T}"                       
 #set logscale x                                                 
 #set logscale y                                                 
-plot "ibaraki.dat" using 5:6 pt 1 lc 1 w p title "Total", "ibaraki.dat" using 5:7 pt 2 lc 2 w p title "Male", "ibaraki.dat" using 5:8 pt 3 lc 3 w p title "Female"      
+plot "ibaraki.dat" using 5:6 pt 1 lc 1 w p title "総人口", "ibaraki.dat" using 5:7 pt 2 lc 2 w p title "男性", "ibaraki.dat" using 5:8 pt 4 lc 4 w p title "女性"      
 
 set terminal pop
