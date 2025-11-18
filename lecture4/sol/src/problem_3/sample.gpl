@@ -1,0 +1,24 @@
+reset
+set terminal pdfcairo color enhanced font "Helvatica,18"        
+set output "ibaraki.pdf"                               
+set title font "Times,14"                                       
+set title "Title"                                               
+set key font "Times,12"                                         
+set key top left                                                
+set xlabel "西暦"                                            
+set ylabel "人口"                                            
+set xlabel font "Times,14"                                      
+set ylabel font "Times,14"                                     
+set xtics font "Times,14"                                       
+set ytics font "Times,14"                                       
+#set xrange [0:1]                                              
+#set yrange [0:1]                                               
+#set xtics 1                                                    
+#set ytics 1                                                    
+#set format x "%.1f"                                            
+#set format y "%.1t{/Symbol \264}10^{%T}"                       
+#set logscale x                                                 
+#set logscale y                                                 
+plot "ibaraki.dat" using 5:6 pt 1 lc 1 w p title "Total", "ibaraki.dat" using 5:7 pt 2 lc 2 w p title "Male", "ibaraki.dat" using 5:8 pt 3 lc 3 w p title "Female"      
+
+set terminal pop
