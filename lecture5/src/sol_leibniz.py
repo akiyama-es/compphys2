@@ -1,6 +1,6 @@
 import math
 
-def leibnitz(num_terms):
+def leibniz(num_terms):
     total = 0
     for i in range(num_terms):
         if i%2 == 0:
@@ -10,7 +10,7 @@ def leibnitz(num_terms):
     return 4.0 * total
 
 # 以下のように書いても良い
-def leibnitz_if(num_terms):
+def leibniz_if(num_terms):
     total = 0
     for i in range(num_terms):
         total = total + (-1)**i/(2 * i + 1)
@@ -18,6 +18,6 @@ def leibnitz_if(num_terms):
 
 if __name__ == '__main__':
     num_terms = 100
-    error = leibnitz(num_terms) - math.pi
-    print(leibnitz(num_terms))
+    error = leibniz(num_terms) - math.pi
+    print(leibniz(num_terms))
     print(error)
