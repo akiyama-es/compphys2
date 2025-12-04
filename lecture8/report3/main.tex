@@ -1,0 +1,188 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% サンプルコード表示設定 %%%%%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第3回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2024年12月19日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_fx}，\ref{sec:problem_plot}，\ref{sec:prablem_collatz}，\ref{sec:problem_pearson}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture6/report2/main.tex}）を活用しても構わない．
+    \item 読みやすく，体裁の整ったレポート作成を心がけて欲しい．
+    \item 作成したレポートの.pdfファイルと{\bf 課題\ref{sec:problem_fx}，課題\ref{sec:problem_plot}，課題\ref{sec:problem_pearson}で使用したソースコード（.pyファイル）}をmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_fx}
+
+以下の関数を考える．ただし，$x\in\mathbb{R}$とする．
+\begin{align}
+\label{eq:naive}
+    f(x)
+    =
+    \frac{1}{\sqrt{x^{2}+1}-x}.
+\end{align}
+この関数の値$f(x)$を計算するプログラムを以下の二通りの方法で書け．\\
+
+\begin{enumerate}
+    \item 式\eqref{eq:naive}の右辺である$1/(\sqrt{x^{2}+1}-x)$そのものを戻り値とする関数を書く．
+    \item $f(x)$の右辺を，
+    \begin{align}
+        f(x)
+        =
+        \frac{\sqrt{x^{2}+1}+x}{(\sqrt{x^{2}+1}-x)(\sqrt{x^{2}+1}+x)}
+        =
+        \sqrt{x^{2}+1}+x,
+    \end{align}
+    と変形した上で，$\sqrt{x^{2}+1}+x$を戻り値とする関数を書く．\\
+\end{enumerate}
+
+
+この時，$x=10^{n}~(n=1,2,3,4,5,6,7)$に対して，上記の二通りの方法で$f(x)$を計算し，計算結果とその結果に対する簡単な考察を与えよ．
+\footnote{余力のある人は，$n=8$でのプログラムの挙動も調べてみよ．とあるエラーが起こるはずである．なぜそのようなエラーが発生するのかを考えてみよ．}
+
+\section{}
+\label{sec:problem_plot}
+
+以下の関数を考える．ただし，$x\in\mathbb{R}$とする．
+\begin{align}
+\label{eq:fx}
+    f(x)=
+    \frac{1-\cos x}{x^{2}}.
+\end{align}\\
+
+\noindent {\bf (A)}
+$f(x)$のグラフを描け．\\
+
+\noindent {\bf (Hint)} 
+
+\begin{itemize}
+    \item 第2回演習で配布したPythonスクリプト（\texttt{lecture2/src/sample\_plot\_functions.py}）を参考にすると良い．ただし，$x$の値は，$x=0.1\times i~(i=1,2,\cdots,100)$などとせよ．
+\end{itemize}
+
+\noindent {\bf (B)}
+$x=1.2\times 10^{-8}$における$f(x)$の値を数値計算せよ．
+前問{\bf (A)}で描いたグラフを踏まえ，あるいは$\lim_{x\to0} f(x)$の極限値を考え，数値計算の結果が妥当かどうかを考察せよ．
+妥当でない結果が得られている場合には，正しい結果を得るためにどのような改善策があり得るかを考え，その改善策が有効かどうかを検証せよ．
+
+\section{}
+\label{sec:prablem_collatz}
+
+以下の漸化式で定義される数列$\{a_{n}\}_{n=1,2,\cdots}$を考える．
+ただし，$a_{1}$は正の整数とする．
+\begin{align}
+    a_{n+1}
+    =
+    \begin{cases}
+        a_{n}/2 &\quad\quad {\rm if}~n\in2\mathbb{Z},\\
+        3a_{n}+1 &\quad\quad {\rm if}~n\notin2\mathbb{Z}.
+    \end{cases}
+\end{align}
+Collatz予想によれば，任意の正の整数$a_{1}$に対して，$a_{c}=1$となるような整数$c$が存在するとされている．\\
+
+\noindent {\bf (A)}
+$a_{1}=100$の場合の整数値$c$を求めよ．
+また，横軸を$n(=1,2,\cdots,c)$，縦軸を$a_{n}$として，数列$\{a_{n}\}$の値を図示せよ．\\
+
+\noindent {\bf (B)}
+前問{\bf (A)}とは異なる$a_{1}$を自分で設定し，横軸を$n(=1,2,\cdots,c)$，縦軸を$a_{n}$として，数列$\{a_{n}\}$の値を図示せよ．
+
+\section{}
+\label{sec:problem_pearson}
+
+二つのデータセット$x=(x_{1},x_{2},\cdots,x_{n})$と$y=(y_{1},y_{2},\cdots,y_{n})$に対し，以下の式で定義される$r$をPearson(ピアソン)相関係数と呼ぶ．
+\begin{align}
+\label{eq:pearson}
+    r=
+    \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{(n-1)\sigma_{x}\sigma_{y}}
+\end{align}
+ここで，$\bar{x}$と$\bar{y}$は$x$と$y$の平均であり，$\sigma_{x}$と$\sigma_{y}$は標準偏差である．
+$r$の値から，二つのデータセットの間の相関が分かる．
+例えば，$r=1$の場合，二つのデータは同じ方向に変化（片方が増加すればもう片方も増加）する．このことを正の相関があるという．
+反対に，$r=-1$の場合，二つのデータは逆の方向に変化（片方が増加すればもう片方は減少）する．このことを負の相関があるという．
+また，$r=0$の場合，二つのデータの間には相関がないことを意味する．
+
+\texttt{lecture8/report3/data}の中に\texttt{data1}，\texttt{data2}，\texttt{data3}という名前の三つの\texttt{.csv}ファイルが格納されている．
+これらの\texttt{.csv}ファイルにはあるルールに従って生成された乱数のデータが保存されている．
+そこで，各々の\texttt{.csv}ファイルに対して，一列目をデータセット$x$，二列目をデータセット$y$として式\eqref{eq:pearson}のPearson相関係数を計算せよ．
+さらに，データセット$x$とデータセット$y$を散布図として可視化し，Pearson相関係数が正しく計算されていることを確認せよ．
+レポートには，Pearson相関係数と散布図を掲載し，それらがどの\texttt{.csv}ファイルから得られたものか明記すること．\\
+
+\noindent {\bf (Hint)} 
+
+\begin{itemize}
+    \item \texttt{lecture$\_$material$\_$8.pdf}のp.17と同様にすれば，\texttt{.csv}ファイルからデータを取得するコードが書ける．
+    \item Pearson相関係数を計算するには平均と標準偏差の計算が必要である．これらの量を定義通り計算するコードを書いても良いが，\texttt{statistics}モジュールを\texttt{import}すれば，これらの量を即座に得ることができる．例えば，データセット$x$を\texttt{xList}というリストで管理した場合，\texttt{statistics.mean(xList)}で$\bar{x}$を，\texttt{statistics.stdev(xList)}で$\sigma_{x}$を得ることができる．
+    \item 散布図の作成には，\texttt{matplotlib.pyplot}モジュールを使うと良い．データセット$x$と$y$をそれぞれ\texttt{xList}と\texttt{yList}というリストで管理した場合，ソースコード\ref{scatter}のようにすれば散布図を作成することができる．
+    \item ソースコード\ref{scatter}の4行目で，\texttt{ax.set$\_$xlabel}の引数を\texttt{"X"}ではなく\texttt{r"\$X\$"}と書くことで\LaTeX の表記を使うことができる．
+\end{itemize}
+
+\begin{lstlisting}[caption=散布図を描くためのPythonスクリプト例,label=scatter]
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+ax.scatter(xList, yList)
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+fig.savefig("scatter.pdf")  
+\end{lstlisting}
+
+
+\section*{アンケート}
+
+この項目は成績とは無関係です．
+\href{https://forms.gle/e9HvrwikYkDX5mrv7}{こちら（クリック）}のGoogleフォームよりアンケートにご協力ください．
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
