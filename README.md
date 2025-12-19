@@ -16,13 +16,13 @@
 * 11/21 : [第7回：数値計算プログラミング入門（3）：リスト，タプル，辞書](lecture7/lecture_material_7.pdf)
 * 12/5  : [第8回：数値計算プログラミング入門（4）：データの入出力，可視化](lecture8/lecture_material_8.pdf)
 * 12/12 : [第9回：数値計算プログラミング入門（5）：NumPyとSciPy](lecture9/lecture_material_9.pdf)
-* 12/19 : [第10回：課題演習][](lecture10/lecture_material_10.pdf)
+* 12/19 : [第10回：課題演習](lecture10/lecture_material_10.pdf)
 
 ### レポート課題
 * [第1回レポート課題](lecture4/report1.pdf)&emsp;[[解答例](lecture4/sol/report1/output/main.pdf)]
 * [第2回レポート課題](lecture6/report2.pdf)
 * [第3回レポート課題](lecture8/report3.pdf)
-* [第4回レポート課題][](lecture10/report4.pdf)
+* [第4回レポート課題](lecture10/report4.pdf)
 
 ### アンケートへの回答
 * [第1回アンケート](reply/report1/summary.md)
