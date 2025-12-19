@@ -1,0 +1,264 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% サンプルコード表示設定 %%%%%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第4回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2026年1月9日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の課題\ref{sec:problem_svd}，\ref{sec:problem_pi_darts}，\ref{sec:problem_datacompression}，\ref{sec:problem_usage_AI}に取り組み，その結果を\LaTeX でレポートにまとめよ．
+なお，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，氏名，学籍番号，所属，レポート作成日を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture10/report4/main.tex}）を活用しても構わない．
+    \item 読みやすく，体裁の整ったレポート作成を心がけて欲しい．
+    \item 作成したレポートの.pdfファイルと{\bf 課題\ref{sec:problem_svd}，課題\ref{sec:problem_pi_darts}，課題\ref{sec:problem_usage_AI}で使用したソースコード（.pyファイル）}をmanabaに提出すること．
+\end{itemize}
+
+\section{}
+\label{sec:problem_svd}
+
+以下の行列の特異値を全て求めよ．
+\footnote{
+実は，{\bf (1)}から{\bf (4)}の中には具体的な特異値分解をせずとも答えが分かる行列がある．ぜひ考えてみて下さい．
+}
+\\
+
+\begin{flushleft}
+\qquad\qquad{\bf (1)}
+$\displaystyle
+    \begin{bmatrix}
+        1 & 1 & 1 & 1 \\
+        2 & 3 & 2 & -3 \\
+        0 & 1 & 0 & 1 \\
+    \end{bmatrix}
+$
+\qquad
+{\bf (2)}
+$\displaystyle
+    \begin{bmatrix}
+        1 & 2 \\
+        2 & 1 \\
+    \end{bmatrix}
+$
+\qquad
+{\bf (3)}
+$\displaystyle
+    \frac{1}{\sqrt{2}}
+    \begin{bmatrix}
+        1 & 0 & 1  \\
+        0 & \sqrt{2} & 0  \\
+        1 & 0 & -1  \\
+    \end{bmatrix}
+$
+\newline\newline\\
+
+\qquad\qquad{\bf (4)}
+対角成分が$2$，残りの成分は全て$1$で与えられる$2025$次の正方行列
+\end{flushleft}
+
+\section{}
+\label{sec:problem_pi_darts}
+図\ref{fig:circle}のように，一辺の長さが1の正方形の内部に存在する四分円を考える．
+この正方形に向かってランダムにダーツを投げる．投げたダーツは必ず正方形の内部のどこかに刺さるものとする．
+ダーツを投げた回数を$N$とし，投げたダーツが四分円の内部に刺さった回数を$M(<N)$とする．
+ダーツの刺さる場所がランダムであれば，$N$が十分に大きい場合，$N$と$M$の比は正方形と四分円の面積の比になることが予想される．
+つまり，
+\begin{align*}
+    \frac{M}{N}\sim\frac{\pi}{4}
+\end{align*}
+となることが期待できる．
+したがって，図\ref{fig:circle}を的としてランダムにダーツを投げるだけで，円周率$\pi$を
+\begin{align}
+\label{eq:pi}
+    \pi\sim4\frac{M}{N}
+\end{align}
+と推定することができる．
+式\eqref{eq:pi}をプログラムを書いて確かめてみよう．
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.4]{fig/circle.pdf}
+    \caption{正方形内の四分円}
+    \label{fig:circle}
+\end{figure}
+
+\noindent {\bf (A)}
+$N=10^{2}, 10^{3}, 10^{4}$の三つの場合について，$K$回だけ$\pi$の推定値を求め，そのヒストグラムを作成し，レポートに掲載せよ．
+そして，三つのヒストグラムを比較することで，得られる$\pi$の推定値と$N$の関係について議論せよ．
+なお，$K$は$O(10^{3})$から$O(10^{4})$程度とし，各自で自由に決定せよ．
+選んだ$N_{\rm sample}$の値についてはレポートに明記すること．~\\
+
+\noindent {\bf (B)}
+$N=2^{k}~(k=4,5,\cdots,19,20)$における$\pi$の推定値を求め，その結果を図にまとめよ．
+ただし，横軸を$N$，縦軸を$\pi$の推定値とし，エラーバーをつけること．
+また，得られた図から分かることを簡潔に述べよ．
+
+
+
+\section{}
+\label{sec:problem_datacompression}
+
+$m$行$n$列の行列$A$の低ランク近似は，特異値分解によって以下のように与えられる．
+\begin{align}
+\label{eq:svd}
+    A_{ij}
+    =
+    \sum_{k=1}^{\min(m,n)}
+    U_{ik}\sigma_{k}V^{\dag}_{kj}
+    \simeq
+    \sum_{k=1}^{\chi}
+    U_{ik}\sigma_{k}V^{\dag}_{kj}
+    .
+\end{align}
+ここで，$\sigma_{k}$は$k$番目の特異値であり，降順（$\sigma_{1}\ge\sigma_{2}\ge\cdots\ge\sigma_{\min(m,n)}$）で並んでいるものとする．
+特異値の打ち切り次元$\chi$について，$\chi=\min(m,n)$ととれば，式\eqref{eq:svd}の右辺は元の行列$A$を厳密に再現するが，特異値の減衰が十分に早ければ$\chi<\min(m,n)$でも元の行列$A$を十分な精度で復元することができる．
+このことを利用して，モノクロ画像データを圧縮してみよう．
+手続きは以下の通りである．
+
+\begin{enumerate}
+    \item 画像ファイル（ここでは.jpgファイルとする）をモノクロ化し，モノクロ化された画像を行列とみなす．
+    \item この行列に対し，特異値分解による低ランク近似を実行する．
+    \item 低ランク近似で得られた行列をモノクロ画像として再構成する．
+\end{enumerate}
+
+この手続きに従って，\texttt{lecture10/report4/img}の中にある画像を圧縮し，どの程度の$\chi$で元の画像がどのくらい復元されるかPythonを使って調べてみよう．
+ただし，以下の設問では，次のソースコード\ref{lib}のように各種ライブラリが\texttt{import}されていることを前提としている．\\
+\begin{lstlisting}[caption=本課題で必要なライブラリの\texttt{import},label=lib]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import linalg
+from PIL import Image
+\end{lstlisting}
+~\\
+
+\noindent {\bf (A)}
+ソースコード\ref{mono}は\texttt{filename}という名前の画像ファイルをモノクロ化し，モノクロ化された画像を行列へと変換するための関数である．
+この関数を使って\texttt{image0.jpg}を行列へ変換した上で特異値分解を実行し，得られた特異値$\sigma_{i}$について，横軸を$i$，縦軸を$\sigma_{i}$とする図を作成せよ．
+
+\begin{lstlisting}[caption=画像ファイルのモノクロ化とその行列への変換,label=mono]
+def matrix_grayscale(filename):
+    image = Image.open(filename)
+    grayscale_image = image.convert("L")  
+    return np.array(grayscale_image)
+\end{lstlisting}
+~\\
+
+\noindent{\bf (B)}
+元々の\texttt{image0.jpg}に対応する行列および，$\chi=5,25,50,100$で圧縮された行列をモノクロ画像として再構成するコードを作成し，得られたモノクロ画像をレポートに掲載せよ．
+\footnote{
+\LaTeX で複数の画像を見栄えよく掲載するには\texttt{minipage}環境を使うと良い．興味のある人は\texttt{minipage}環境の使い方を調べてみよ．
+}
+なお，ソースコード\ref{image}は与えられた行列\texttt{matrix\_image}をモノクロ画像として再構成するための関数である（引数の\texttt{matrix\_image}はNumPy配列にも対応している）．
+必要に応じて自由に使用してもらって構わない．
+\begin{lstlisting}[caption=行列をモノクロ画像として再構成,label=image]
+def plot_single_image(matrix_image):
+    plt.figure(figsize=(8, 6))
+    plt.plot()
+    plt.title("Name")
+    plt.imshow(matrix_image, cmap="gray")
+    plt.axis("off")
+    plt.savefig("visualized_image.pdf")
+\end{lstlisting}
+~\\
+
+\noindent{\bf (C)}
+\texttt{lecture10/report4/img}の中にある\texttt{image0.jpg}以外の画像，
+\footnote{
+\texttt{lecture10/report4/img}の中に格納されている\texttt{image5.jpg}は一様乱数を使って生成されたものである．
+}
+あるいは自分で好きに用意した.jpgファイルに対して，上の設問{\bf (A)}，{\bf (B)}を行ってみよ．
+ただし，圧縮を行う際の$\chi$の値は適宜変更しても構わない．
+
+\section{}
+\label{sec:problem_usage_AI}
+この課題では，プログラミングにおける生成AIの活用方法について考えてみたい．
+生成AIは，デバッグ（プログラムに混入したバグを特定・修正する作業）やリファクタリング（出力結果を変えずに，コードの可読性や保守性を向上させる書き換え）において，有用な支援ツールとなり得る．
+
+実際に，生成AIを使って自身が書いたコードのリファクタリングをしてみよう．
+ここでは，OpenAIが開発した対話型生成AIサービスであるChatGPT（\href{https://chatgpt.com/}{\texttt{https://chatgpt.com/}}）を使ってみよう．
+URLからアクセスすると，図\ref{fig:chatGPT}のような画面になる．
+テキスト入力ウィンドウから生成AIへの質問を入力し，Enterキーを押すことで生成AIからの回答が得られる．
+テキスト入力ウィンドウに図\ref{fig:question}のような入力をし，それに続いて，自身が作成したコードを貼り付けることで，生成AIにリファクタリングをさせることができる．
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.14]{fig/chatGPT.png}
+    \caption{ChatGPTの画面}
+    \label{fig:chatGPT}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.14]{fig/question.png}
+    \caption{ChatGPTにリファクタリングをさせる}
+    \label{fig:question}
+\end{figure}
+
+図\ref{fig:question}のような入力に続いて，第2回レポート課題4で自身が作成したソースコードを貼り付け，そのコードのリファクタリングを生成AIによって行ってみよ．
+レポートには以下の二点について簡潔にまとめてもらえれば良い．
+
+\begin{itemize}
+    \item 生成AIが出力したコードが実行できたか．また，そのコードの出力結果は妥当であったか．
+    \item 自身の書いたコードと生成AIが書いたコードを比較し，どのような差異（改善または改悪）が見られたか．
+\end{itemize}
+
+なお，この課題のソースコードについては，生成AIによってリファクタリングされたソースコードのみを提出すれば良い．
+
+
+\section*{アンケート}
+
+この項目は成績とは無関係です．
+\href{https://forms.gle/kSkN8F4sz85EcZ6w6}{こちら（クリック）}のGoogleフォームよりアンケートにご協力ください．
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
