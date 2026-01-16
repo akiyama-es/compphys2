@@ -252,7 +252,7 @@
 
 まずはgnuplotやPythonで作成した図（.pdfや.eps）をfigディレクトリに格納する．
 例として，figディレクトリに格納したsample.pdfを文章中に挿入する．
-ソースファイル上で\texttt{fig}環境を作り，その中で\texttt{\textbackslash includegraphics$\{$fig/sample.pdf$\}$}と書けば図を挿入できる（図\ref{fig:sample}）．
+ソースファイル上で\texttt{figure}環境を作り，その中で\texttt{\textbackslash includegraphics$\{$fig/sample.pdf$\}$}と書けば図を挿入できる（図\ref{fig:sample}）．
 表の場合と同様，図の説明を\texttt{\textbackslash caption$\{\}$}で記述できる．
 実際のソースコードでは，\texttt{\textbackslash includegraphics[scale=1]$\{$fig/sample.pdf$\}$}となっているが，\texttt{[scale=1]}は図の大きさを調整するためのオプションである．
 \LaTeX では，図を表示する場所が自動的に調整されるが，\texttt{\textbackslash begin$\{$figure$\}$}にオプションを付すことで，その場所を自分で操作することもできる．
@@ -275,6 +275,40 @@
     \caption{Trigonometric functions}
     \label{fig:sample}
 \end{figure}
+
+複数の図を並べて表示したい場合，\texttt{figure}環境の中で\texttt{minipage}環境を使うと良い．
+例として，図\ref{fig:sample_minipage}およびそのソースコードを参照して欲しい．
+なお，\texttt{minipage}環境内で\texttt{\textbackslash caption}を使うことで並べて表示したそれぞれの図に対して個別にキャプションを付けることもできる．
+
+\begin{lstlisting}[caption=図\ref{fig:sample_minipage}]
+    \begin{figure}[htbp]
+        \centering
+        \begin{minipage}[t]{0.49\hsize}
+            \includegraphics[scale=0.4]{fig/bessel_jv.pdf}
+        \end{minipage} 
+        \begin{minipage}[t]{0.49\hsize}
+            \includegraphics[scale=0.4]{fig/bessel_yv.pdf}
+        \end{minipage} 
+        \caption{
+            (left) Bessel function of the first kind, (right) Bessel function of the second kind.
+        }
+        \label{fig:sample_minipage}
+    \end{figure} 
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.49\hsize}
+        \includegraphics[scale=0.4]{fig/bessel_jv.pdf}
+    \end{minipage} 
+    \begin{minipage}[t]{0.49\hsize}
+        \includegraphics[scale=0.4]{fig/bessel_yv.pdf}
+    \end{minipage} 
+    \caption{
+        (left) Bessel function of the first kind, (right) Bessel function of the second kind.
+    }
+    \label{fig:sample_minipage}
+\end{figure} 
 
 \section{数式，図，表の参照}
 
