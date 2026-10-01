@@ -3,8 +3,8 @@
 ### はじめに
 * [シラバス](https://kdb.tsukuba.ac.jp/syllabi/2026/FCC2345/jpn/0)
 * [Linuxデスクトップをリモートで使う方法](./vnc/vnc.pdf)
-* [LaTeX入門](./intro_latex/introduction_latex.pdf)
-* [Pythonに関するクイックリファレンス](./short_note_python/short_note_python.pdf)
+* [LaTeX関連資料](./latex/introduction_latex/introduction_latex.pdf)
+* [Python関連資料](./python/short_note_python/short_note_python.pdf)
 
 ### 講義・演習資料
 * 10/2  : [第1回：オリエンテーション・計算機システム（Linux）の使い方](lecture1/lecture_material_1.pdf)
