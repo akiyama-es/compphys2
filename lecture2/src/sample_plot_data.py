@@ -1,20 +1,18 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-###################################################################
-
 def plot_dat(input_filename, output_figname):
     data = np.loadtxt(input_filename)
-    x, y, yerr = data[:, 0], data[:, 1], data[:, 2]
+    x, y = data[:, 0], data[:, 1]
     plt.figure(figsize=(8, 6))
-    plt.title("Sample", fontsize=20)
+    plt.title(f"Visualization of {input_filename}", fontsize=20)
     plt.xlabel("x", fontsize=20)
     plt.ylabel("y", fontsize=20)
-    plt.errorbar(x, y, yerr=yerr, fmt="o", color = "b", capsize=3)
+    plt.plot(x, y, "o-")
+    #plt.errorbar(x, y, yerr=yerr, fmt="o", color = "b", capsize=3)
     plt.grid(True)
     plt.savefig(output_figname)
     plt.close()
 
-###################################################################
+plot_dat("input.dat", "output.pdf")
 
-plot_dat("noisy_data1.dat", "noisy_data1.pdf")
