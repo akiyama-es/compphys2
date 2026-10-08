@@ -604,14 +604,31 @@ print(y)
 
 \section{matplotlibによる作図}
 
+\subsection{最も基本的な使い方}
+
 matplotlibは非常に便利なグラフ描画のためのライブラリである．
 \footnote{
 https://matplotlib.org/stable/gallery/index
 }
-matplotlibの最も基本的な使い方をソースコード\ref{matplot1}に示す．
+matplotlibの最も基本的な使い方をソースコード\ref{matplot_basic}に示す．
 ここでは，Pythonで数値計算を行う際に広く使われているNumPyライブラリと併用している．
+\texttt{plt.plot()}は指定したデータをもとに，点や線を用いてグラフを描画するための関数である．
+基本的な使い方は以下の通りである．
 
-\begin{lstlisting}[caption=matplotlibの最も基本的な使い方,label=matplot1]
+\begin{center}
+\texttt{plt.plot(x, y, fmt)}
+\end{center}
+
+ここで，引数の順番には意味があり，それぞれ以下の役割を持つ．
+
+\begin{itemize}
+\item \texttt{x}: 横軸のデータ
+\item \texttt{y}: 縦軸のデータ
+\item \texttt{fmt}: 線の種類, データ点の形状,
+および色を指定する文字列
+\end{itemize}
+
+\begin{lstlisting}[caption=matplotlibの最も基本的な使い方,label=matplot_basic]
 import matplotlib.pyplot as plt
 import numpy as np
  
@@ -623,15 +640,15 @@ plt.plot(x, y, "-ob")
 plt.savefig("sinx.pdf")
 \end{lstlisting}
 
-ソースコード\ref{matplot1}の出力結果を図\ref{fig:sinx}に示す．
-ソースコード\ref{matplot1}の7行目の「\texttt{-ob}」について，「\texttt{-}」は実線，「\texttt{o}」は\texttt{o}の形のマーカー，「\texttt{b}」は青色を意味する．
+ソースコード\ref{matplot_basic}の出力結果を図\ref{fig:sinx}に示す．
+ソースコード\ref{matplot_basic}の7行目の「\texttt{-ob}」が\texttt{fmt}の具体定な書き方である．「\texttt{-}」は実線，「\texttt{o}」は\texttt{o}の形のマーカー，「\texttt{b}」は青色を意味する．
 線の種類，マーカーの種類，色を指定する順番は任意である．つまり，「\texttt{o-b}」や「\texttt{bo-}」のように書いても良い．
 いくつかの代表的な線，マーカー，色の指定方法をそれぞれ表\ref{tab:linestyle}，\ref{tab:marker}，\ref{tab:color}に示す．
 
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.7]{fig/sinx.pdf}
-    \caption{ソースコード\ref{matplot1}の出力結果}
+    \caption{ソースコード\ref{matplot_basic}の出力結果}
     \label{fig:sinx}
 \end{figure}
 
@@ -694,6 +711,162 @@ plt.savefig("sinx.pdf")
     \label{tab:color}
 \end{table}
 
+\subsection{誤差バー付きのグラフ}
+
+数値計算や実験で得られるデータには，統計的な誤差が
+含まれることがある．
+このようなデータを可視化する際には，各データ点に誤差の大きさを表す
+「誤差バー (error bar)」を付けることが多い．
+matplotlibでは, \texttt{plt.errorbar()}を使うことで，誤差バー付きのグラフを作成できる．
+基本的な使い方は以下の通り．
+
+\begin{center}
+\texttt{plt.errorbar(x, y, yerr=yerr, fmt="o")}
+\end{center}
+
+\texttt{plt.errorbar()}の主な引数は以下の通りである．
+
+\begin{itemize}
+\item \texttt{x}: 横軸のデータ
+\item \texttt{y}: 縦軸のデータ
+\item \texttt{yerr}: 縦方向の誤差の大きさ
+\item \texttt{xerr}: 横方向の誤差の大きさ
+\item \texttt{fmt}: データ点の形状や線の種類，
+および色を指定する文字列で, \texttt{fmt="o"}のように書く
+\item \texttt{color}: データ点や誤差バーの色で，\texttt{color="b"}のように書く
+\item \texttt{capsize}: 誤差バーの両端に付ける
+横線の長さを指定し，\texttt{capsize=3}のように書く
+\end{itemize}
+
+\texttt{yerr}を指定した場合，各データ点を中心として上下に誤差バーが表示される．
+\texttt{xerr}を指定すれば，横方向にも誤差バーを付けることができる．
+以下に簡単な例を示す．
+ソースコード\ref{matplot_errorbar}で，\texttt{x}と\texttt{y}はそれぞれデータ点の横軸と縦軸の値であり，
+\texttt{yerr}は各データ点の縦方向の誤差を表す．
+
+\begin{lstlisting}[caption=誤差バー付きのグラフ,
+label=matplot_errorbar]
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2.1, 3.9, 6.2, 7.8, 10.1])
+yerr = np.array([0.3, 0.5, 0.4, 0.6, 0.5])
+
+plt.errorbar(x, y, yerr=yerr, fmt="o", color="b", capsize=3)
+
+plt.xlabel("x")
+plt.ylabel("y")
+
+plt.savefig("errorbar.pdf")
+\end{lstlisting}
+
+ソースコード\ref{matplot_errorbar}の出力結果を図\ref{fig:errorbar}に示す．
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{fig/errorbar.pdf}
+    \caption{ソースコード\ref{matplot_errorbar}の出力結果}
+    \label{fig:errorbar}
+\end{figure}
+
+
+\subsection{散布図}
+
+2つの変数の関係を調べる際には，「散布図 (scatter plot)」がよく用いられる．
+散布図では，各データを点として表示し，変数間の相関やデータの分布を視覚的に確認できる．matplotlibでは，\texttt{plt.scatter()}を使って散布図を作成できる．
+基本的な使い方は以下の通り．
+
+\begin{center}
+\texttt{plt.scatter(x, y, color="b", s=50)}
+\end{center}
+
+主な引数の役割は以下の通り．
+
+\begin{itemize}
+\item \texttt{x}: 横軸のデータ
+\item \texttt{y}: 縦軸のデータ
+\item \texttt{color}: データ点の色で, \texttt{color="b"}のように指定する
+\item \texttt{s}: データ点の大きさであり，\texttt{s=50}のように指定する
+\item \texttt{marker}: データ点の形状であり，\texttt{marker="o"}のように指定する
+\item \texttt{label}: データに付ける名前であり，凡例を表示する際に使用する.
+\end{itemize}
+
+ソースコード\ref{matplot_scatter}を見てみよう．ソースコード\ref{matplot_scatter}の出力結果は図\ref{fig:scatter}のようになる．
+
+\begin{lstlisting}[caption=散布図の作成,
+label=matplot_scatter]
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.array([1, 2, 3, 4, 5, 6])
+y = np.array([2.1, 3.8, 5.2, 4.9, 7.1, 8.3])
+
+plt.scatter(x, y, color="b", s=50)
+
+plt.xlabel("x")
+plt.ylabel("y")
+
+plt.savefig("scatter.pdf")
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{fig/scatter.pdf}
+    \caption{ソースコード\ref{matplot_scatter}の出力結果}
+    \label{fig:scatter}
+\end{figure}
+
+なお，\texttt{plt.plot(x, y, "o")}を使っても同様にデータ点のみを表示できる．しかし，\texttt{plt.scatter()}は散布図の作成に
+特化したメソッドであり，各データ点の色や大きさを個別に指定できるという特徴がある．状況に合わせて使い分けてみてほしい．
+
+
+\subsection{複数のデータのプロット}
+
+複数のデータを同じグラフ上に表示することで，それぞれの結果を比較することができる．matplotlibでは，描画メソッドを複数回呼び出すことで，同じグラフ上に複数のデータをプロットできる．
+
+以下では，$\sin x$と$\cos x$を同じグラフ上に表示する例を示す．
+
+\begin{lstlisting}[caption=複数のデータのプロット,
+label=matplot_multi]
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = np.arange(-np.pi, np.pi, 0.1)
+
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+plt.plot(x, y1, "-b", label="sin(x)")
+plt.plot(x, y2, "--r", label="cos(x)")
+
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+
+plt.savefig("sin_cos.pdf")
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.7]{fig/sin_cos.pdf}
+    \caption{ソースコード\ref{matplot_multi}の出力結果}
+    \label{fig:multi}
+\end{figure}
+
+この例では，\texttt{plt.plot()}を2回呼び出し，それぞれのデータを異なる線種と色で表示している．\texttt{"-b"}で青色の実線，\texttt{"--r"}で赤色の破線を指定している．
+
+複数のデータを同じグラフ上に表示する際には，凡例を付けることで各データを区別しやすくなる．\texttt{label}は各データに付ける名前を指定するための引数であり，実践的な作図では頻繁に使うことになる．
+\texttt{plt.legend()}を呼び出すことで，\texttt{label}で指定した名前が凡例として表示される（ソースコード\ref{matplot_multi}の14行目のように\texttt{plt.legend()}を呼び出さないと\texttt{label}で指定した名前が凡例として出力されないので注意）．
+
+なお，\texttt{plt.plot()}だけでなく，
+\texttt{plt.errorbar()}や\texttt{plt.scatter()}も
+複数回呼び出すことができる．
+したがって，誤差バー付きのデータと曲線を同じグラフ上に表示するといったことも可能である．
+
+
+\subsection{\LaTeX の記法を使う}
+
 なお，matplotlibによる作図では\LaTeX を使うことができる．
 ソースコード\ref{matplot1}に対して，\LaTeX の記法に従って軸のラベルを入れるようにしたのがソースコード\ref{matplot2}である．
 \texttt{r"..."}と書くことにより，その中で\LaTeX の記法を使うことができる．
@@ -726,6 +899,8 @@ plt.savefig("sinx_latex.pdf")
     \caption{ソースコード\ref{matplot2}の出力結果}
     \label{fig:sinx_latex}
 \end{figure}
+
+\subsection{変数の埋め込み}
 
 さらに，\texttt{f"..."}を使うことで，Pythonの変数を埋め込むことができる．
 \footnote{
@@ -770,6 +945,7 @@ b\{b\}\allowbreak c\{c\}\allowbreak d\{d\}.pdf")}
     \caption{ソースコード\ref{matplot3}の出力結果}
     \label{fig:poly_abcd}
 \end{figure}
+
 
 \section{仮想環境}
 
