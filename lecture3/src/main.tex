@@ -1,0 +1,38 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{サンプル}
+\author{名前\\学籍番号\\所属}
+\date{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+\section{練習1}
+
+\begin{align}
+    f(x)=x
+\end{align}
+
+\end{document}
