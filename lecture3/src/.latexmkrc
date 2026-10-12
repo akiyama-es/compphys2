@@ -8,16 +8,19 @@ $makeindex = 'mendex %O -o %D %S';
 $dvipdf = 'dvipdfmx %O -o %D %S';
 $pdf_mode = 3;
 
+$out_dir = 'output';
+
 $pvc_view_file_via_temporary = 0;
+
 if ($^O eq 'linux') {
-    $dvi_previewer = "xdg-open %S";
-    $pdf_previewer = "xdg-open %S";
+    $dvi_previewer = 'xdg-open %S';
+    $pdf_previewer = 'xdg-open %S';
 } elsif ($^O eq 'darwin') {
-    $dvi_previewer = "open %S";
-    $pdf_previewer = "open %S";
+    $dvi_previewer = 'open %S';
+    $pdf_previewer = 'open %S';
 } else {
-    $dvi_previewer = "start %S";
-    $pdf_previewer = "start %S";
+    $dvi_previewer = 'start %S';
+    $pdf_previewer = 'start %S';
 }
 
-$clean_full_ext = "%R.synctex.gz"
+$clean_full_ext = '%R.synctex.gz';
