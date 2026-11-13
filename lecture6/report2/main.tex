@@ -1,0 +1,312 @@
+\documentclass[a4paper,12pt]{jsarticle}
+
+%%%%%%%%%%%%%%%% パッケージの指定 %%%%%%%%%%%%%%%%
+\usepackage[top=20truemm,bottom=40truemm,left=40truemm,right=40truemm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{braket}
+\usepackage{cases}
+\usepackage{dsfont}
+\usepackage[dvipdfmx]{hyperref,graphicx}
+\usepackage{pxjahyper}
+\usepackage{fancyhdr}
+\usepackage{here}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%% 式番号を（節番号.連番）に設定 %%%%%%%%%%%
+\makeatletter
+\@addtoreset{equation}{section}
+\def\theequation{\thesection.\arabic{equation}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% サンプルコード表示設定 %%%%%%%%%%%%%%
+\renewcommand{\lstlistingname}{ソースコード}
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% 文書の表題を設定 %%%%%%%%%%%%%%%%
+\title{計算物理学II 第2回レポート課題}
+%\author{氏名\\学籍番号\\所属}
+\date{提出期限 : 2026年11月30日}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle
+
+以下の共通課題\ref{sec:leibniz}, \ref{sec:wallis}, \ref{sec:err_reduction}, \ref{sec:taylor}の全てと，選択課題\ref{sec:ai_assist}, \ref{sec:taylor_is_wrong?}, \ref{sec:acc_conv}の中から少なくとも1つを選んで取り組み，その結果を\LaTeX でレポートにまとめよ．
+レポート作成にあたっては，以下の点に留意せよ．
+\begin{itemize}
+    \item レポートにはタイトルを付け，{\bf 氏名，学籍番号，所属，レポート作成日}を記載すること．
+    \item レポート作成時に，この.pdfファイルのソースファイル（\texttt{lecture6/report2/main.tex}）を活用しても構わない．
+    \item 読みやすいように体裁の整ったレポート作成を心がけて欲しい．
+    \item 作成したレポートの{\bf .texファイルおよび.pdfファイル}をmanabaに提出すること．
+    \item レポートの内容に関する質問は随時受け付ける．ただし，提出期限直前の質問には対応が間に合わない場合があるため，余裕をもって質問すること．
+\end{itemize}
+
+なお，共通問題に続くアンケートにもご協力ください．
+
+\section*{共通課題}
+
+\section{}
+\label{sec:leibniz}
+
+Leibniz（ライプニッツ）の公式，
+\begin{align}
+    \sum_{n=0}^{\infty}\frac{(-1)^{n}}{2n+1}
+    =
+    \frac{\pi}{4}
+\end{align}
+を使って，$\pi$の近似値を次のように得ることを考える．
+\begin{align}
+    \pi
+    \simeq
+    4\sum_{n=0}^{N}\frac{(-1)^{n}}{2n+1}.
+\end{align}
+$N=10^{5}$の時の$\pi$の近似値を求めよ．
+
+
+\section{}
+\label{sec:wallis}
+
+Wallis（ウォリス）の公式
+\begin{align}
+    \prod_{n=1}^{\infty}
+    \left(
+        \frac{2n}{2n-1}
+        \cdot
+        \frac{2n}{2n+1}
+    \right)
+    =
+    \frac{\pi}{2}
+\end{align}
+を使って，$\pi$の近似値を次のように得ることを考える．
+\begin{align}
+    \pi
+    \simeq
+    2\prod_{n=1}^{N}
+    \left(
+        \frac{2n}{2n-1}
+        \cdot
+        \frac{2n}{2n+1}
+    \right).
+\end{align}
+$N=10^{5}$の時の$\pi$の近似値を求めよ．
+また，課題\ref{sec:leibniz}で求めた$N=10^{5}$での$\pi$の近似値と比べて，どちらの方が真の$\pi$に近い結果を与えているか述べよ．
+
+
+
+\section{}
+\label{sec:err_reduction}
+
+以下の関数を考える．ただし，$x\in\mathbb{R}$とする．
+\begin{align}
+\label{eq:naive}
+    f(x)
+    =
+    \frac{1}{\sqrt{x^{2}+1}-x}.
+\end{align}
+この関数の値$f(x)$を計算するプログラムを以下の二通りの方法で作成し，$x=10^{n}~(n=1,2,3,4,5,6,7)$に対して，それぞれの方法で得られる結果を述べよ．また，得られた結果の計算精度について簡単に議論せよ．
+\footnote{余力のある人は，$n=8$でのプログラムの挙動も調べてみよ．とあるエラーが起こるはずである．なぜそのようなエラーが発生するのかを考えてみよ．}
+
+\begin{enumerate}
+    \item 式\eqref{eq:naive}の右辺である$1/(\sqrt{x^{2}+1}-x)$そのものを戻り値とする関数．
+    \item $f(x)$の右辺を，
+    \begin{align}
+        f(x)
+        =
+        \frac{\sqrt{x^{2}+1}+x}{(\sqrt{x^{2}+1}-x)(\sqrt{x^{2}+1}+x)}
+        =
+        \sqrt{x^{2}+1}+x,
+    \end{align}
+    と変形した上で，$\sqrt{x^{2}+1}+x$を戻り値とする関数．\\
+\end{enumerate}
+
+\section{}
+\label{sec:taylor}
+
+$f(x)$および$g(x)$として，異なる初等関数を自由に二つ選び，以下の課題に取り組んでみよ．\\
+
+\begin{enumerate}
+    \item[(1)] 自分の選んだ初等関数を明記した上で，$f(x)$，$g(x)$のTaylor展開を書け．
+\end{enumerate}
+
+\begin{enumerate}   
+    \item[(2)] 以下のように，次数$N$で打ち切られた$f(x)$のTaylor展開を使って$f(a)$の近似値を求めることを考える．
+    ただし，$a$は$f(x)$のTaylor展開の収束半径内にある数値とし，自由に選んでよい．
+    \begin{itemize}
+        \item 与えられた$a$と$N$に対して，次数$N$で打ち切られたTaylor展開から$f(a)$の近似値を求めるプログラムを作成すること．
+        例えば，ソースコード\ref{src_exp}は，$f(x)={\rm e}^{x}$の場合のサンプルプログラムである．
+        20行目以下では，定義した関数\texttt{taylor$\_$exp}の引数を\texttt{for}文で回すことで，$N=1,2,\cdots,10$までの結果が得られるようになっている．
+        \item Pythonで初等関数を使う場合，\texttt{math}モジュールにそれらが用意されている．
+        \texttt{math}モジュールで使える数学関数については，\url{https://docs.python.org/ja/3/library/math.html}を参照するとよい．
+        \item 「\LaTeX 入門」の5節，あるいはこの.pdfファイルのソースファイルを参照し，得られた結果を表\ref{tab:sample}のようにまとめよ．
+        ただし，下の行に行くほど打ち切り次数$N$の値が大きくなるように並べること．
+        なお，$N$の値は好きに選べばよいが，最低でも三つは選んで表に載せること．
+        また，一番下の行には$N=\infty$の場合，すなわち$f(a)$の厳密な値を記載せよ．
+    \end{itemize}
+\end{enumerate}
+
+\begin{enumerate}   
+    \item[(3)] $g(x)$についても問(2)と同様のことを行え．
+    \footnote{
+    すなわち，次数$N$で打ち切られた$g(x)$のTaylor展開を使って$g(b)$の近似値を求め，厳密な値へ近づいていくことを確認せよ．ただし，$b$は$g(x)$のTaylor展開の収束半径内にある数値とし，自由に選んでよい．
+    }
+\end{enumerate}
+
+\begin{table}[H]
+    \centering
+    \caption{$f(a)$のTaylor展開による近似}
+    \begin{tabular}{c|c}
+        \hline
+        打ち切り次数$N$ & $f(a)$の近似値  \\
+        \hline\hline
+        2 & 得られた近似値 \\ 
+        4 & 得られた近似値 \\ 
+        6 & 得られた近似値 \\ 
+        8 & 得られた近似値 \\ 
+        10 & 得られた近似値 \\ 
+        $\infty$ & 厳密な値 \\ 
+        \hline
+    \end{tabular}
+    \label{tab:sample}
+\end{table}
+
+\begin{lstlisting}[caption=指数関数の場合,label=src_exp]
+import math
+
+def taylor_exp(x, num_terms):
+    approximation = 0
+    numerator = 1
+    denominator = 1
+
+    for n in range(num_terms):
+        term = numerator / denominator
+        approximation += term
+
+        numerator *= x
+        denominator *= (n + 1)
+
+    return approximation
+
+x = 0.1
+n_list = [2, 4, 6, 8, 10]
+
+for num_terms in n_list:
+    approximation = taylor_exp(x, num_terms)
+
+    print(num_terms, approximation)
+
+print("Exact", math.exp(x))
+\end{lstlisting}
+
+
+\section*{アンケート}
+
+この項目は成績とは無関係です．
+\href{https://forms.gle/YCL48AfDZnM4A4eXA}{こちら（クリック）}のGoogleフォームよりアンケートにご協力ください．
+
+\clearpage
+
+\appendix
+\renewcommand{\thesection}{\Alph{section}}
+
+\section*{選択課題}
+
+\section{}
+\label{sec:ai_assist}
+
+本レポート課題のために作成した{\bf .pyファイル}を，生成AIを用いてリファクタリングしてみよ．
+
+ここで，リファクタリングとは，ソースコードの構造や記述方法を改善し，原則としてその出力内容を変えないまま，ソースコードの読みやすさや保守性を高めることをいう．
+
+レポートには，使用した生成AIを明記した上で，リファクタリングを行った結果，どのような変更が加えられたか，また，リファクタリングがどのような点で有用であるか（あるいは弊害があるか）について，簡単なコメントを記述せよ．なお，生成AIが提案した変更をそのまま採用する必要はなく，各変更の内容や妥当性を確認したうえで，必要に応じて修正してよい．
+
+この課題に取り組む場合，以下の点に留意せよ．
+\begin{itemize}
+    \item 使用する生成AIは各自が自由に選んでよい．自身が作成した.pyファイルを生成AIに読み込ませる方法としては，ソースコードをコピペする，ファイルをアップロードする，デスクトップアプリを利用する，などが考えられる．各自が取り組みやすい方法を選ぶこと．
+    \item 生成AIに.pyファイルを読み込ませ，「リファクタリングして」などと依頼すればよい．
+    \item {\bf 生成AIによる変更を反映した.pyファイルは，元のファイルとは別名で保存すること．}
+    \item 本課題に取り組んだ場合，リファクタリング前の.pyファイルとリファクタリング後の.pyファイルの{\bf 二種類を提出せよ}．それぞれがどちらのファイルであるか，レポート内で説明するか，ファイル名から判別できるようにすること．
+\end{itemize}
+
+
+\section{}
+\label{sec:taylor_is_wrong?}
+
+共通課題\ref{sec:taylor}のソースコード\ref{src_exp}で定義されている関数\texttt{taylor\_exp}を使って, 以下の課題に取り組んでみよ．
+
+\begin{enumerate}
+    \item[(1)] ${\rm e}^{20}$について，打ち切り次数$N=70$で計算し, その結果を\texttt{math.exp(20)}と比較せよ．その上で，関数\texttt{taylor\_exp}による計算結果は妥当と言えそうかどうかを述べよ．
+\end{enumerate}
+\begin{enumerate}
+    \item[(2)] ${\rm e}^{-20}$について，打ち切り次数$N=70$で計算し, その結果を\texttt{math.exp(-20)}と比較せよ．その上で，関数\texttt{taylor\_exp}による計算結果は妥当と言えそうかどうかを述べよ．
+\end{enumerate}
+\begin{enumerate}
+    \item[(3)] 前問の(1), (2)で妥当な計算結果が得られなかった場合，その原因を考察し，計算結果を改善する方法を考えてみよ．
+    \footnote{
+    Hint: ${\rm e}^{-20}=1/{\rm e}^{20}$.
+    }
+\end{enumerate}
+
+\section{}
+\label{sec:acc_conv}
+
+Taylor展開を有限次数で打ち切り，$\ln 2$の近似値を計算することを考える．
+いま，以下のような数列$P_{n}$ ($n=1,2,\cdots$)を考える．
+\begin{align}
+\label{eq:taylor_log}
+    P_{n}=\sum_{k=1}^{n}\frac{(-1)^k}{k}.
+\end{align}
+以下の問に答えよ
+
+\begin{enumerate}
+    \item[(1)] $n$を引数として，$P_{n}$を戻り値とする関数を作り，$P_{102}$の値を求めよ．
+\end{enumerate}
+\begin{enumerate}
+    \item[(2)] $\lim_{n\to\infty}p_n=c$を満たす数列$p_{n}$を考える．ここで，$p_n$と$c$の差は，$n$を一つ増やすごとに一定の比率で小さくなると仮定しよう．
+    すなわち，
+    \begin{align}
+    \label{eq:geometric}
+        p_{n+1}-c=\alpha(p_{n}-c)
+    \end{align}
+    が成り立つとしよう．式\eqref{eq:geometric}について，$n$を$n+1$とした式を考え，この二つの式から$\alpha$を消去し，$c$について解け．
+\end{enumerate}
+\begin{enumerate}
+    \item[(3)] 
+    式\eqref{eq:taylor_log}の数列$P_{n}$を使って，以下のような数列$q_{n}$を考える．
+    \begin{align}
+    \label{eq:aitken}
+        q_{n}=P_{n}-\frac{(P_{n+1}-P_{n})^{2}}{P_{n}+P_{n+2}-2P_{n+1}}.
+    \end{align}
+    $q_{100}$の値を求めよ．
+\end{enumerate}
+\begin{enumerate}
+    \item[(4)] 問(1), (3)で求めた$P_{102}$と$q_{100}$について，どちらの方が$\ln2$をよく近似しているか調べよ．\footnote{
+    式\eqref{eq:aitken}はAitken(エイトケン)の加速法と呼ばれ，数列の収束をより速くするためのアルゴリズムになっている．
+    }
+\end{enumerate}
+
+%\bibliographystyle{unsrt}
+%\bibliography{bib/ref}
+
+\end{document}
