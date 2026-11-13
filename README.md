@@ -12,7 +12,7 @@
 * [第3回：LaTeXによる科学文書作成](lecture3/lecture_material_3.pdf)
 * [第4回：数値計算プログラミング入門（1）：変数，型，四則演算](lecture4/lecture_material_4.pdf)
 * [第5回：数値計算プログラミング入門（2）：ループ，条件分岐](lecture5/lecture_material_5.pdf)
-* 第6回：数値計算プログラミング入門（3）：関数
+* [第6回：数値計算プログラミング入門（3）：関数](lecture6/lecture_material_6.pdf)
 * 第7回：数値計算プログラミング入門（4）：リスト，タプル，辞書
 * 第8回：数値計算プログラミング入門（5）：データの入出力
 * 第9回：数値計算プログラミング入門（6）：ライブラリの活用
@@ -21,8 +21,8 @@
 
 ### レポート課題
 * [第1回レポート課題](lecture4/report1.pdf)
-<!-- 
 * [第2回レポート課題](lecture6/report2.pdf)
+<!-- 
 * [第3回レポート課題](lecture8/report3.pdf)
 * [第4回レポート課題](lecture10/report4.pdf)
 -->
